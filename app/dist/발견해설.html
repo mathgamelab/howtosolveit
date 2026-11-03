@@ -645,7 +645,9 @@ window.GRAPHS = {
       "expr": "0.5*(x-2)^2-4",
       "color": "#9aa0a6",
       "label": "y=f(x)",
-      "reveal": "after:p_g"
+      "reveal": "after:p_g",
+      "label_at": 2,
+      "label_dy": -0.8
      },
      {
       "id": "curve_g",
@@ -653,7 +655,9 @@ window.GRAPHS = {
       "expr": "-0.5*(x-2-m)^2+4",
       "color": "#d9822b",
       "label": "y=g(x)",
-      "reveal": "after:p_g"
+      "reveal": "after:p_g",
+      "label_at": 7.4,
+      "label_dy": 0.3
      },
      {
       "id": "curve_h",
@@ -1854,14 +1858,39 @@ window.GRAPHS = {
     axis: false, showCopyright: false, showNavigation: false,
     pan: { enabled: false }, zoom: { enabled: false },
   });
-  board.create("axis", [[0, 0], [1, 0]], {
-    name: scene.axes.x.name, withLabel: true, label: { position: "rt", offset: [-12, 12] },
-    ticks: { ticksDistance: scene.axes.x.ticks, minorTicks: 0, drawLabels: true, label: { fontSize: 11 } },
+  // Manim 느낌 (밝은 배경): 격자 없는 축, 굵고 둥근 곡선, Manim 색을 밝은 바탕에 맞게 진하게, KaTeX 글꼴
+  const M = { blue: "#2c7fb8", orange: "#e8772e", green: "#3a9a4f", red: "#d0463b", gray: "#a3a3a3", axis: "#3b3b3b" };
+  const TONE = { "#2f6fde": M.blue, "#d9822b": M.orange, "#1f8a5b": M.green, "#c2453a": M.red,
+    "#9aa0a6": M.gray, "#888": M.gray, "#333": "#3b3b3b", "#6b7078": "#7a7a7a" };
+  const tone = (c, fb) => (c ? TONE[c.toLowerCase()] || c : fb);
+  const TEXFONT = "font-family: KaTeX_Main, 'Times New Roman', serif;";
+  const hasHangul = (t) => /[가-힣]/.test(t);
+  // 라벨: 수식이면 KaTeX, 한글이면 일반 글꼴
+  const labelAttrs = (t, col, size = 16) => hasHangul(t)
+    ? { fontSize: size - 2, strokeColor: col, cssStyle: "font-weight:600;" }
+    : { fontSize: size, strokeColor: col, useKatex: true };
+  const tickLabel = { fontSize: 13, strokeColor: "#555", cssStyle: TEXFONT, highlight: false };
+  const axisStyle = (name, labelOffset, ticks, drawLabels) => ({
+    strokeColor: M.axis, strokeWidth: 2, highlight: false, lastArrow: { type: 2, size: 6 },
+    name, withLabel: true, label: { position: "rt", offset: labelOffset, ...labelAttrs(name, M.axis, 18) },
+    ticks: { ticksDistance: ticks, minorTicks: 0, majorHeight: 9, strokeColor: M.axis, strokeWidth: 1.6,
+      drawLabels, drawZero: false, insertTicks: false, label: tickLabel },
   });
-  board.create("axis", [[0, 0], [0, 1]], {
-    name: scene.axes.y.name, withLabel: true, label: { position: "rt", offset: [10, -6] },
-    ticks: { ticksDistance: scene.axes.y.ticks, minorTicks: 0, drawLabels: scene.axes.y.labels !== false },
-  });
+  board.create("axis", [[0, 0], [1, 0]], axisStyle(scene.axes.x.name, [-14, 14], scene.axes.x.ticks, true));
+  board.create("axis", [[0, 0], [0, 1]], axisStyle(scene.axes.y.name, [10, -8], scene.axes.y.ticks, scene.axes.y.labels !== false));
+
+  // 곡선이 처음 열릴 때 왼쪽에서 오른쪽으로 그려진다 (Manim 의 Create)
+  const smooth = (t) => t * t * (3 - 2 * t);
+  function drawIn(setEnd, ms = 900) {
+    const [x0, , x1] = board.getBoundingBox(), t0 = performance.now();
+    // requestAnimationFrame 은 탭이 가려지면 멈추므로 타이머로 돌린다 (가려져도 결국 끝까지 그려진다)
+    const tick = () => {
+      const t = Math.min(1, (performance.now() - t0) / ms);
+      setEnd(t < 1 ? x0 + (x1 - x0) * smooth(t) : Infinity); board.update();
+      if (t < 1) setTimeout(tick, 16);
+    };
+    setEnd(x0); setTimeout(tick, 16);
+  }
 
   const objs = Object.fromEntries(scene.objects.map((o) => [o.id, o]));
   const sliderSpecs = scene.objects.filter((o) => o.type === "slider");
@@ -1882,16 +1911,22 @@ window.GRAPHS = {
   scene.objects.filter((o) => o.type === "function").forEach((o) => {
     const at = live(o.expr);
     const main = o === fnSpec;
-    fns[o.id] = {
-      spec: o, at,
-      jx: board.create("functiongraph", [at], {
-        strokeColor: o.color || (main ? color("--curve", "#2f6fde") : "#888"),
-        strokeWidth: o.width || (main ? 3 : 2), dash: o.style === "dashed" ? 2 : 0,
-        visible: false, highlight: false,
-        name: main ? "" : (o.label || ""), withLabel: !main && !!o.label,
-        label: { position: "rt", offset: [-50, 10], fontSize: 13, strokeColor: o.color || "#888" },
-      }),
-    };
+    const col = tone(o.color, main ? M.blue : M.gray);
+    const guide = o.role === "fixed" || o.role === "guide";
+    const ent = { spec: o, at, end: Infinity, shown: false };
+    ent.jx = board.create("functiongraph", [at, () => board.getBoundingBox()[0], () => Math.min(ent.end, board.getBoundingBox()[2])], {
+      strokeColor: col, strokeWidth: o.width ? o.width + 1 : main ? 5 : guide ? 2.5 : 3.5,
+      dash: o.style === "dashed" ? 3 : 0, lineCap: "round", visible: false, highlight: false,
+      name: main || o.label_at !== undefined ? "" : (o.label || ""), withLabel: !main && !!o.label && o.label_at === undefined,
+      label: { position: "rt", offset: [-56, 12], ...labelAttrs(o.label || "", col) },
+    });
+    // label_at: 곡선과 겹치지 않는 자리(x=label_at)에 라벨을 따로 붙인다
+    if (o.label_at !== undefined) {
+      ent.lab = board.create("text", [() => o.label_at + 0.15, () => at(o.label_at) + (o.label_dy || 0), o.label], {
+        visible: false, fixed: true, highlight: false, anchorY: "middle", ...labelAttrs(o.label, col),
+      });
+    }
+    fns[o.id] = ent;
   });
   const F = fns[fnSpec.id].at;
   const target = rootsSpec.of[1] === "@x-axis" ? () => 0 : fns[rootsSpec.of[1]].at;
@@ -1899,12 +1934,13 @@ window.GRAPHS = {
   // 세로선 (대칭축 등)
   const vlines = scene.objects.filter((o) => o.type === "vline").map((o) => {
     const xf = live(o.x);
+    const col = tone(o.color, "#7a7a7a");
     const ln = board.create("line", [[() => xf(0), 0], [() => xf(0), 1]], {
-      strokeColor: o.color || "#6b7078", strokeWidth: 1.5, dash: 2, visible: false, highlight: false, fixed: true,
+      strokeColor: col, strokeWidth: 1.8, dash: 3, visible: false, highlight: false, fixed: true,
       straightFirst: true, straightLast: true,
     });
-    const lab = board.create("text", [() => xf(0) + 0.1, () => board.getBoundingBox()[1] - 0.6, o.label || ""], {
-      visible: false, fontSize: 12, strokeColor: o.color || "#6b7078", fixed: true, highlight: false,
+    const lab = board.create("text", [() => xf(0) + 0.1, () => board.getBoundingBox()[3] + 0.45, o.label || ""], {
+      visible: false, fixed: true, highlight: false, ...labelAttrs(o.label || "", col, 15),
     });
     return { spec: o, ln, lab };
   });
@@ -1913,14 +1949,16 @@ window.GRAPHS = {
   const pointObjs = scene.objects.filter((o) => o.type === "point-on-curve").map((o) => {
     const xf = typeof o.x === "number" ? () => o.x : ((g) => () => g(0))(live(o.x));
     const on = fns[o.curve] ? fns[o.curve].at : F;
+    const col = tone(o.color, "#3b3b3b");
     const pt = board.create("point", [() => xf(), () => on(xf())], {
-      name: o.label || "", withLabel: !!o.label, size: o.label ? 4 : 3, fixed: true, visible: false, highlight: false,
-      color: o.color || "#888", label: { offset: [8, 10], fontSize: 13, strokeColor: o.color || "#555" },
+      name: o.label || "", withLabel: !!o.label, size: 5, fixed: true, visible: false, highlight: false,
+      fillColor: col, strokeColor: "#ffffff", strokeWidth: 1.5,
+      label: { offset: [10, 12], ...labelAttrs(o.label || "", col, 16) },
     });
     let trail = null; const seen = new Map();
     if (o.trace) {
-      trail = board.create("curve", [[], []], { strokeColor: o.color || "#888", strokeWidth: 2, strokeOpacity: 0.45,
-        dash: 1, visible: false, highlight: false, fixed: true });
+      trail = board.create("curve", [[], []], { strokeColor: col, strokeWidth: 3, strokeOpacity: 0.35,
+        lineCap: "round", visible: false, highlight: false, fixed: true });
     }
     return { spec: o, pt, trail, record(key) {
       if (!trail) return;
@@ -1931,8 +1969,8 @@ window.GRAPHS = {
   });
   const rootPts = [];
   for (let n = 0; n < 6; n++) {
-    rootPts.push(board.create("point", [0, 0], { name: "", size: 4, fixed: true, visible: false,
-      strokeColor: "#1f8a5b", fillColor: "#1f8a5b", highlight: false }));
+    rootPts.push(board.create("point", [0, 0], { name: "", size: 5.5, fixed: true, visible: false,
+      strokeColor: "#ffffff", strokeWidth: 1.5, fillColor: M.green, highlight: false }));
   }
 
   // 서로 다른 교점: 부호가 바뀌는 점 + 차이가 0에 '닿는' 극점(중근·접점)을 모아 합친다
@@ -1966,9 +2004,12 @@ window.GRAPHS = {
   function refreshBoard() {
     const showCurve = isRevealed(fnSpec.reveal);
     let anyCurve = false;
-    Object.values(fns).forEach(({ spec, jx }) => {
+    Object.values(fns).forEach((ent) => {
+      const { spec, jx } = ent;
       const on = isRevealed(spec.reveal);
+      if (on && !ent.shown) { ent.shown = true; if (!params.get("to")) drawIn((e) => { ent.end = e; }, spec.role ? 600 : 1000); }
       jx.setAttribute({ visible: on });
+      if (ent.lab) ent.lab.setAttribute({ visible: on });
       if (on && spec.role !== "fixed" && spec.role !== "guide") anyCurve = true;
     });
     vlines.forEach(({ spec, ln, lab }) => { const on = isRevealed(spec.reveal); ln.setAttribute({ visible: on }); lab.setAttribute({ visible: on }); });
@@ -2096,7 +2137,7 @@ window.GRAPHS = {
     const usr = pts.map(([px, py]) => new JXG.Coords(JXG.COORDS_BY_SCREEN, [px, py], board).usrCoords.slice(1));
     if (sketchCurve) board.removeObject(sketchCurve);
     sketchCurve = board.create("curve", [usr.map((p) => p[0]), usr.map((p) => p[1])], {
-      strokeColor: "#d9822b", strokeWidth: 2.5, dash: 2, highlight: false, fixed: true,
+      strokeColor: M.orange, strokeOpacity: 0.7, strokeWidth: 2.5, dash: 2, highlight: false, fixed: true,
     });
     pts = []; redrawSketch();
   }

@@ -466,7 +466,9 @@ window.GRAPHS = {
       "expr": "0.5*(x-2)^2-4",
       "color": "#9aa0a6",
       "label": "y=f(x)",
-      "reveal": "after:p_g"
+      "reveal": "after:p_g",
+      "label_at": 2,
+      "label_dy": -0.8
      },
      {
       "id": "curve_g",
@@ -474,7 +476,9 @@ window.GRAPHS = {
       "expr": "-0.5*(x-2-m)^2+4",
       "color": "#d9822b",
       "label": "y=g(x)",
-      "reveal": "after:p_g"
+      "reveal": "after:p_g",
+      "label_at": 7.4,
+      "label_dy": 0.3
      },
      {
       "id": "curve_h",
