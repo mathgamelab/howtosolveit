@@ -1,0 +1,163 @@
+{
+  "id": "2026_6월모평_공통_13",
+  "source": { "exam": "2026_6월모평", "number": 13, "section": "공통", "score": 4, "answer": "④", "unit": "수학II-적분" },
+  "statement": "그림과 같이 함수 $f(x)=3x^2-7x+2$에 대하여 곡선 $y=f(x)$와 직선 $y=\\dfrac{1}{3}x-\\dfrac{2}{3}$ 및 $y$축으로 둘러싸인 영역을 $A$, 곡선 $y=f(x)$와 직선 $y=\\dfrac{1}{3}x-\\dfrac{2}{3}$로 둘러싸인 영역을 $B$, 곡선 $y=f(x)$와 두 직선 $y=\\dfrac{1}{3}x-\\dfrac{2}{3}$, $x=k\\,(k>2)$로 둘러싸인 영역을 $C$라 하자. $(A\\text{의 넓이})+(C\\text{의 넓이})=(B\\text{의 넓이})$일 때, 상수 $k$의 값은? [4점]\n① $\\dfrac{29}{12}$ ② $\\dfrac{5}{2}$ ③ $\\dfrac{31}{12}$ ④ $\\dfrac{8}{3}$ ⑤ $\\dfrac{11}{4}$",
+
+  "understand": {
+    "given": [
+      "f(x)=3x^2-7x+2 (아래로 볼록한 포물선)",
+      "직선 g(x)=\\tfrac13 x-\\tfrac23",
+      "A: y축과 첫 교점 사이, 곡선이 직선 위에 있는 영역",
+      "B: 두 교점 사이, 곡선이 직선 아래에 있는 영역",
+      "C: 둘째 교점과 x=k (k>2) 사이, 곡선이 직선 위에 있는 영역"
+    ],
+    "unknown": "상수 k의 값",
+    "condition": "(A의 넓이)+(C의 넓이)=(B의 넓이)",
+    "restate": "A와 B는 이미 정해진 넓이이고, k를 오른쪽으로 끌수록 C만 자란다. C가 '딱 B−A 만큼' 될 때의 k를 찾는 문제."
+  },
+
+  "analysis": [
+    {
+      "id": "q0",
+      "question": "k의 값을 알려면 무엇을 알아야 하나?",
+      "answer": "k가 들어 있는 방정식 하나. 조건 A+C=B 가 그 방정식이 되어야 한다.",
+      "needs": ["q1"],
+      "heuristic": "work-backward"
+    },
+    {
+      "id": "q1",
+      "question": "A+C=B 를 k의 식으로 쓰려면, A·B·C 중 k에 따라 움직이는 것은 무엇이고 고정된 것은 무엇인가?",
+      "needs": ["q2"],
+      "heuristic": "draw-figure | vary-parameter",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "곡선 y=f(x)와 직선 y=⅓x−⅔ 를 같은 좌표평면에 손으로 그려 보세요. 포물선의 볼록 방향·y절편·x축과 만나는 점, 직선의 기울기·x절편을 표시하고, 두 그래프가 몇 번, 대략 어디서 만나는지 적으세요.",
+          "accept": {
+            "parabola": { "opens": "up", "y_intercept": 2, "zeros": ["1/3", "2"] },
+            "line": { "slope": "1/3", "x_intercept": 2 },
+            "intersections": { "count": 2, "x_ranges": [[0, 1], [2, 2]] }
+          },
+          "hint_after_fail": "f(x)=(3x−1)(x−2) 로 인수분해해 보세요. 직선의 x절편도 2입니다 — 두 그래프가 (2,0)을 함께 지납니다.",
+          "checkpoint": { "type": "sketch-matches", "tolerance": 0.3 }
+        },
+        "action": "세로선 x=k 의 손잡이를 2 부터 오른쪽으로 끌어 보세요. 세 영역의 색이 어떻게 변하는지, 오른쪽 저울(A+C 와 B)이 어느 쪽으로 기우는지 보세요.",
+        "checkpoint": {
+          "type": "slider-in-range",
+          "object": "k",
+          "range": [2.55, 2.8],
+          "require": { "label": "balance", "state": "level" }
+        },
+        "noticing": "A와 B는 k와 상관없이 고정이고 C만 자란다. 저울은 처음엔 B쪽으로 기울다가(A+C<B) 어느 한 k에서 수평이 되고 그 뒤로는 A+C 쪽으로 기운다. 그러므로 조건을 만족하는 k는 하나뿐이고, 'C(k)=B−A' 가 k의 방정식이다. — 그러나 A, B, C를 각각 적분하면 세 번 계산해야 한다. 더 짧은 길은 없을까?"
+      }
+    },
+    {
+      "id": "q2",
+      "question": "세 넓이를 따로 구하지 않고, A+C=B 를 적분 '한 개'로 쓸 수 있나?",
+      "needs": ["q3"],
+      "heuristic": "auxiliary-element | vary-parameter",
+      "discover": {
+        "scene": "s2",
+        "predict": {
+          "prompt": "보조 함수 h(x)=f(x)−(⅓x−⅔) 를 생각하세요. (1) h의 그래프 개형(볼록 방향, 영점의 위치, 구간별 부호)을 그리세요. (2) 0부터 t까지 h를 적분한 값 S(t)=∫₀ᵗ h(x)dx 가 t를 0에서 키울 때 어떻게 변할지(증가/감소가 바뀌는 t, S가 다시 0으로 돌아오는지)를 손으로 스케치하세요.",
+          "accept": {
+            "h": { "opens": "up", "zeros": ["4/9", "2"], "sign_pattern": "+-+" },
+            "S": { "extrema": [{ "x": "4/9", "kind": "max" }, { "x": "2", "kind": "min" }], "starts_at": 0, "returns_to_zero_after": 2 }
+          },
+          "hint_after_fail": "S'(t)=h(t) 입니다. h가 양이면 S는 올라가고, h가 음이면 S는 내려갑니다. h의 부호가 바뀌는 곳이 S의 극값입니다.",
+          "checkpoint": { "type": "sketch-matches", "tolerance": 0.3 }
+        },
+        "action": "빗금 커서 t 를 0 에서 오른쪽으로 천천히 끌어 보세요. h와 x축 사이가 색칠되고(위는 +, 아래는 −), 아래 그래프에 누적값 S(t)가 그려집니다. S가 올라가다 내려가다 다시 올라와 0 에 닿는 순간에서 멈추세요.",
+        "checkpoint": {
+          "type": "point-in-region",
+          "object": "pt_S",
+          "region": { "x": [2.3, 3.2], "y": [-0.04, 0.04] }
+        },
+        "noticing": "S(t)가 올라간 높이는 A, 내려간 깊이는 B, 다시 올라간 높이는 C. S(k)=0 이라는 것은 '올라간 만큼(A+C) 내려갔다(B)'는 뜻 — 즉 A+C=B ⟺ ∫₀ᵏ h(x)dx = 0. 세 영역을 나눌 필요가 없고, 정적분 하나가 0 이 되는 k 를 찾으면 된다."
+      }
+    },
+    {
+      "id": "q3",
+      "question": "∫₀ᵏ {f(x)−(⅓x−⅔)} dx = 0 을 만족하는 k (k>2) 는 얼마인가?",
+      "needs": [],
+      "heuristic": "compute",
+      "verified": {
+        "h(x)": "3x^2-22x/3+8/3",
+        "∫_0^k h dx": "k^3-11k^2/3+8k/3 = k(k-1)(3k-8)/3",
+        "roots": ["0", "1", "8/3"],
+        "k": "8/3"
+      }
+    }
+  ],
+
+  "synthesis": [
+    "h(x)=f(x)−(⅓x−⅔)=3x²−(22/3)x+8/3 이고, 9x²−22x+8=(9x−4)(x−2)=0 에서 교점의 x좌표는 4/9, 2.",
+    "[0,4/9]에서 h≥0, [4/9,2]에서 h≤0, [2,k]에서 h≥0 이므로 A=∫₀^{4/9}h, B=−∫_{4/9}^{2}h, C=∫₂^{k}h.",
+    "A+C=B ⟺ A−B+C=0 ⟺ ∫₀ᵏ h(x)dx=0.",
+    "∫₀ᵏ h(x)dx = k³−(11/3)k²+(8/3)k = (1/3)k(k−1)(3k−8).",
+    "k>2 이므로 k=8/3. (검산: A=400/729, B=1372/729, C=972/729, A+C=B.) 답 ④"
+  ],
+
+  "scenes": {
+    "s1": {
+      "title": "세로선 x=k 끌기 — 무엇이 변하고 무엇이 고정인가",
+      "view": [-0.6, 6.5, 3.6, -3],
+      "axes": { "ticks": 1, "grid": false },
+      "objects": [
+        { "id": "curve_f", "type": "function", "expr": "3x^2-7x+2", "reveal": "after-predict", "label": "y=f(x)" },
+        { "id": "line_g", "type": "function", "expr": "x/3-2/3", "reveal": "after-predict", "label": "y=x/3-2/3" },
+        { "id": "k", "type": "slider", "range": [2, 3.4], "init": 2.05, "step": 0.01, "readout": false, "handle": "on-x-axis" },
+        { "id": "vline_k", "type": "segment", "from": ["k", -3], "to": ["k", 6.5], "style": "dashed", "label": "x=k" },
+        { "id": "region_A", "type": "area-between", "upper": "curve_f", "lower": "line_g", "x": [0, "4/9"], "fill": "A", "label": "A" },
+        { "id": "region_B", "type": "area-between", "upper": "line_g", "lower": "curve_f", "x": ["4/9", 2], "fill": "B", "label": "B" },
+        { "id": "region_C", "type": "area-between", "upper": "curve_f", "lower": "line_g", "x": [2, "k"], "fill": "A", "label": "C" },
+        { "id": "balance", "type": "label", "kind": "balance-scale", "left": ["region_A", "region_C"], "right": ["region_B"], "readout": "qualitative", "states": ["right-heavy", "level", "left-heavy"], "tolerance": 0.03 }
+      ]
+    },
+    "s2": {
+      "title": "부호 있는 넓이 누적기 — 세 넓이가 적분 하나로",
+      "view": [-0.4, 3.2, 3.4, -1.8],
+      "axes": { "ticks": 1, "grid": false },
+      "panels": ["top", "bottom"],
+      "objects": [
+        { "id": "curve_h", "panel": "top", "type": "function", "expr": "3x^2-22x/3+8/3", "reveal": "after-predict", "label": "y=h(x)=f(x)-(x/3-2/3)" },
+        { "id": "t", "type": "slider", "range": [0, 3.2], "init": 0, "step": 0.01, "readout": false, "handle": "on-x-axis" },
+        { "id": "sweep", "panel": "top", "type": "segment", "from": ["t", -1.8], "to": ["t", 3.2], "style": "cursor" },
+        { "id": "signed_fill", "panel": "top", "type": "area-between", "upper": "curve_h", "lower": "0", "x": [0, "t"], "signed": true, "fill": { "positive": "A", "negative": "B" } },
+        { "id": "curve_S", "panel": "bottom", "type": "function", "expr": "x^3-11x^2/3+8x/3", "domain": [0, "t"], "reveal": "after-predict", "label": "S(t)=∫₀ᵗ h" },
+        { "id": "pt_S", "panel": "bottom", "type": "point-on-curve", "curve": "curve_S", "x": "t", "trace": true },
+        { "id": "zero_line", "panel": "bottom", "type": "function", "expr": "0", "reveal": "always", "style": "axis" }
+      ]
+    }
+  },
+
+  "verification": {
+    "tool": "sympy",
+    "script": "verify_2026_6월모평_13.py",
+    "result": "22/22 PASS",
+    "claims": [
+      { "claim": "f(x)=(3x-1)(x-2): f의 영점은 x=1/3, 2", "ok": true },
+      { "claim": "f의 y절편은 2", "ok": true },
+      { "claim": "f의 꼭짓점 x=7/6, 최솟값 -25/12", "ok": true },
+      { "claim": "직선 y=x/3-2/3 은 기울기 1/3, x절편 2 (곡선과 직선이 모두 (2,0)을 지난다)", "ok": true },
+      { "claim": "곡선과 직선의 교점 x좌표는 4/9, 2", "ok": true },
+      { "claim": "h(x)=f(x)-g(x)=3x^2-22x/3+8/3", "ok": true },
+      { "claim": "부호: [0,4/9]에서 h>0, [4/9,2]에서 h<0, x>2에서 h>0", "ok": true },
+      { "claim": "A = 400/729", "ok": true },
+      { "claim": "B = 1372/729", "ok": true },
+      { "claim": "S(2) = A - B = -4/3", "ok": true },
+      { "claim": "A - B + C = ∫_0^k h(x)dx  (세 넓이의 부호합 = 정적분 하나)", "ok": true },
+      { "claim": "S(t) = t^3 - 11t^2/3 + 8t/3", "ok": true },
+      { "claim": "S'(t)=h(t): S는 t=4/9에서 극대(=A), t=2에서 극소(=A-B)", "ok": true },
+      { "claim": "S(0)=0 이고 S(t)는 t=8/3 에서 다시 0 이 된다", "ok": true },
+      { "claim": "∫_0^k h dx = k(k-1)(3k-8)/3", "ok": true },
+      { "claim": "∫_0^k h dx = 0 의 해는 k = 0, 1, 8/3", "ok": true },
+      { "claim": "k>2 인 해는 8/3 뿐", "ok": true },
+      { "claim": "k=8/3 일 때 C = 4/3 = 972/729", "ok": true },
+      { "claim": "k=8/3 일 때 A + C = B", "ok": true },
+      { "claim": "정답은 ④ 8/3", "ok": true },
+      { "claim": "다른 선택지는 조건을 만족하지 않는다", "ok": true },
+      { "claim": "S(2.5)<0, S(3)>0: 영점이 눈금 2와 3 사이에만 있어 눈금만으로는 ③④⑤ 구별 불가", "ok": true }
+    ]
+  }
+}

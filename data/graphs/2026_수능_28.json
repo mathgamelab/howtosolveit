@@ -1,0 +1,665 @@
+{
+  "id": "2026_수능_미적분_28",
+  "source": {
+    "exam": "2026_수능",
+    "number": 28,
+    "section": "미적분",
+    "score": 4,
+    "answer": "⑤",
+    "page": "p-15.png"
+  },
+  "statement": "함수 $f(x)=\\dfrac{1}{2}x^2-x+\\ln(1+x)$ 와 양수 $t$에 대하여 점 $(s,\\,f(s))\\,(s>0)$에서 $y$축에 내린 수선의 발과 곡선 $y=f(x)$ 위의 점 $(s,\\,f(s))$에서의 접선이 $y$축과 만나는 점 사이의 거리가 $t$가 되도록 하는 $s$의 값을 $g(t)$라 하자. $\\displaystyle\\int_{\\frac{1}{2}}^{\\frac{27}{4}} g(t)\\,dt$의 값은? [4점]\n① $\\dfrac{161}{12}+\\ln 3$ ② $\\dfrac{40}{3}+\\ln 3$ ③ $\\dfrac{53}{4}+\\ln 2$ ④ $\\dfrac{79}{6}+\\ln 2$ ⑤ $\\dfrac{157}{12}+\\ln 2$",
+  "understand": {
+    "given": [
+      "f(x) = \\tfrac12 x^2 - x + \\ln(1+x)  (정의역 x > -1)",
+      "점 P(s, f(s)), s > 0",
+      "H = P에서 y축에 내린 수선의 발 = (0, f(s))",
+      "T = P에서의 접선이 y축과 만나는 점",
+      "선분 HT의 길이 = t 가 되게 하는 s 를 g(t) 라 한다 (즉 g 는 't → s' 대응)"
+    ],
+    "unknown": "\\int_{1/2}^{27/4} g(t)\\,dt 의 값",
+    "condition": "t 하나에 s 가 하나 대응해야 g(t) 가 함수로 정의된다 (문제는 이를 암묵적으로 전제)",
+    "restate": "g 는 '거리 t 를 주면 그 거리를 만드는 위치 s 를 돌려주는' 대응이다. 그러므로 먼저 '위치 s 를 주면 거리 t 가 얼마인가'(정방향)를 알아야 거꾸로 갈 수 있다."
+  },
+  "analysis": [
+    {
+      "id": "q0",
+      "question": "∫ g(t) dt 를 구하려면 무엇을 알아야 하나?",
+      "answer_hint": "g(t) 의 식, 또는 g 의 그래프 아래 넓이를 다른 넓이로 바꿔 쓰는 방법",
+      "needs": [
+        "q1",
+        "q4"
+      ],
+      "heuristic": "work-backward"
+    },
+    {
+      "id": "q1",
+      "question": "g(t) 를 알려면 무엇을 알아야 하나? — '거리 t 를 주면 s 가 나온다'는 대응을 거꾸로 돌리면 '위치 s 를 주면 거리 t 가 나온다'. 그러면 t 는 s 의 어떤 식인가?",
+      "needs": [
+        "q2",
+        "q3"
+      ],
+      "heuristic": "work-backward | inverse-problem",
+      "note": "문제의 g 는 역방향 대응이다. 정방향 대응 t = h(s) 를 먼저 찾으면 g = h^{-1}."
+    },
+    {
+      "id": "q2",
+      "question": "점 P 가 곡선 위를 움직일 때, 수선의 발 H 와 접선의 y절편 T 사이의 거리 t 는 무엇으로 결정되나?",
+      "needs": [],
+      "heuristic": "draw-figure | vary-parameter | auxiliary-element",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "곡선 y = f(x) = ½x² − x + ln(1+x) 의 개형을 손으로 그려 보세요. (정의역은? x=0 에서 값과 기울기는? 극값은 몇 개? 양쪽 끝은 어디로?)",
+          "hint": "f'(x) 를 통분해 보면 분자가 아주 단순해집니다.",
+          "accept": {
+            "domain": "x > -1",
+            "passes": [
+              [
+                0,
+                0
+              ]
+            ],
+            "stationary_points": [
+              0
+            ],
+            "extrema_count": 0,
+            "monotone_on_positive": "increasing",
+            "end_behavior": "-+",
+            "concavity_on_positive": "up"
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "tolerance": "qualitative"
+          },
+          "feedback_on_miss": "f'(x) = x − 1 + 1/(1+x) = x²/(1+x) ≥ 0 이므로 극값이 없고, x=0 에서만 잠시 평평합니다."
+        },
+        "action": "점 P 를 곡선 위에서 드래그하세요. y축 위에 수선의 발 H 와 접선의 y절편 T 가 따라 움직이고, 선분 HT 의 길이 t 와 선분 HP 의 길이 s 가 눈금으로 표시됩니다. 접선의 기울기 눈금도 함께 보입니다. ▶ 접선의 기울기가 정확히 1 이 되는 위치로 P 를 옮겨 보세요. 그때 t 와 s 는 어떤 관계인가요?",
+        "checkpoint": {
+          "type": "slider-in-range",
+          "object": "s",
+          "range": [
+            1.568,
+            1.668
+          ],
+          "target": "(1+√5)/2 ≈ 1.618 (접선 기울기 = 1)",
+          "tolerance": 0.05
+        },
+        "noticing": "기울기가 1 일 때 t = s. 즉 삼각형 HTP 는 H 에서 직각, 밑변 HP = s, 높이 HT = t 이고 빗변이 접선 위에 있으므로 언제나 t / s = (접선의 기울기) = f'(s). 따라서 t = s·f'(s) = s·s²/(1+s) = s³/(1+s).",
+        "verified": {
+          "slope_1_at_s": "(1+sqrt(5))/2",
+          "t_formula": "s^3/(1+s)",
+          "example": "s=2 → 기울기 4/3, t = 8/3"
+        }
+      }
+    },
+    {
+      "id": "q3",
+      "question": "t = h(s) = s³/(1+s) 를 거꾸로 돌려 g(t) 로 쓸 수 있나? (t 하나에 s 가 하나인가?) 그리고 적분 구간 t ∈ [1/2, 27/4] 는 s 로는 어느 구간인가?",
+      "needs": [],
+      "heuristic": "vary-parameter | inverse-function",
+      "discover": {
+        "scene": "s2",
+        "predict": {
+          "prompt": "가로축 s, 세로축 t 인 평면에 t = h(s) = s³/(1+s) (s ≥ 0) 의 개형을 그려 보세요. h(0), h(1), h(3) 의 값은? 증가하나요, 오르락내리락하나요?",
+          "accept": {
+            "passes": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0.5
+              ],
+              [
+                3,
+                6.75
+              ]
+            ],
+            "monotone": "increasing",
+            "extrema_count": 0,
+            "concavity": "up",
+            "end_behavior": "0+"
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "tolerance": "qualitative"
+          },
+          "feedback_on_miss": "h'(s) = (2s³+3s²)/(1+s)² > 0 (s>0) 이므로 계속 증가합니다. h(1) = 1/2, h(3) = 27/4 — 적분 구간의 양 끝과 똑같은 수가 나오는 것을 눈여겨보세요."
+        },
+        "action": "슬라이더 t 를 1/2 에서 27/4 까지 움직이세요. 수평선 y = t 와 곡선 t = h(s) 의 교점 개수 라벨을 보면서, 교점의 s 좌표(= g(t)) 가 얼마인지 읽어 보세요. ▶ t = 27/4 까지 올려서 교점의 s 좌표를 읽으세요.",
+        "checkpoint": {
+          "type": "slider-in-range",
+          "object": "t",
+          "range": [
+            6.7,
+            6.8
+          ],
+          "and": {
+            "type": "count-equals",
+            "object": "pts_ht",
+            "value": 1
+          },
+          "tolerance": 0.05
+        },
+        "noticing": "어느 t 에서도 교점은 정확히 하나 → g(t) 는 h 의 역함수로 잘 정의된다. t = 1/2 ⇔ s = 1, t = 27/4 ⇔ s = 3. 즉 적분 구간 [1/2, 27/4] 는 s 로는 [1, 3].",
+        "verified": {
+          "g(1/2)": "1",
+          "g(27/4)": "3",
+          "monotone": "h'(s) > 0 for s > 0"
+        }
+      }
+    },
+    {
+      "id": "q4",
+      "question": "g 의 식을 직접 구하지 않고(세제곱 방정식을 풀지 않고) ∫_{1/2}^{27/4} g(t) dt 를 구할 수 있나? — 이 적분은 (s, t) 평면에서 어느 영역의 넓이인가?",
+      "needs": [
+        "q5"
+      ],
+      "heuristic": "draw-figure | reformulate (적분 → 넓이) | decompose",
+      "discover": {
+        "scene": "s3",
+        "predict": {
+          "prompt": "s2 에서 본 t = h(s) 의 그래프를 다시 그리고, ∫_{1/2}^{27/4} g(t) dt 가 뜻하는 영역을 칠해 보세요. (g(t) 는 세로축 값 t 에 대한 '가로 길이'입니다. 가로 길이를 t 에 대해 쌓으면 어떤 영역이 되나요?)",
+          "accept": {
+            "region": "곡선 t=h(s) 의 왼쪽(세로축 t 와 곡선 사이), 1/2 ≤ t ≤ 27/4",
+            "bounded_by": [
+              "t-axis(s=0)",
+              "curve h",
+              "t=1/2",
+              "t=27/4"
+            ]
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "tolerance": "qualitative"
+          },
+          "feedback_on_miss": "∫ g(t) dt 는 '세로로 얇게 썬 가로 띠'를 쌓은 넓이입니다. 곡선 아래가 아니라 곡선 왼쪽(세로축 쪽) 영역입니다."
+        },
+        "action": "세 영역 타일 — 큰 직사각형 [0,3]×[0,27/4], 작은 직사각형 [0,1]×[0,1/2], 곡선 아래 영역(1≤s≤3) — 을 +/− 로 켜고 끄면서, 방금 칠한 ∫g 영역과 정확히 겹치는 조합을 만드세요. 조합이 맞으면 탐침점 Q 를 ∫g 영역 안 아무 곳에 놓아 확인하세요.",
+        "checkpoint": {
+          "type": "point-in-region",
+          "object": "probe_Q",
+          "region": "region_g",
+          "requires_composition": {
+            "rect_big": "+1",
+            "rect_small": "-1",
+            "under_h": "-1"
+          },
+          "tolerance": 0.05
+        },
+        "noticing": "∫_{1/2}^{27/4} g(t) dt = (큰 직사각형 3·27/4) − (작은 직사각형 1·1/2) − ∫_1^3 h(s) ds. 역함수의 적분이 원래 함수의 적분으로 바뀌었다 — g 의 식은 끝까지 필요 없다.",
+        "verified": {
+          "rect_big": "81/4",
+          "rect_small": "1/2",
+          "identity": "∫g dt = 81/4 − 1/2 − ∫_1^3 h ds"
+        }
+      }
+    },
+    {
+      "id": "q5",
+      "question": "∫_1^3 s³/(1+s) ds 는 얼마인가?",
+      "needs": [],
+      "heuristic": "compute (다항식 나눗셈)",
+      "verified": {
+        "division": "s^3/(1+s) = s^2 - s + 1 - 1/(1+s)",
+        "integral": "20/3 - ln 2",
+        "final": "81/4 - 1/2 - (20/3 - ln 2) = 157/12 + ln 2"
+      }
+    }
+  ],
+  "synthesis": [
+    "f'(x) = x − 1 + 1/(1+x) = x²/(1+x).  (x>0 에서 f'>0, 극값 없음)",
+    "P(s, f(s)) 에서의 접선: y = f'(s)(x − s) + f(s).  y절편 T = (0, f(s) − s f'(s)), 수선의 발 H = (0, f(s)).",
+    "HT = s f'(s) = s³/(1+s) =: h(s).  (삼각형 HTP: 밑변 s, 높이 t, 빗변 기울기 f'(s) → t = s·f'(s))",
+    "h'(s) = (2s³ + 3s²)/(1+s)² > 0 (s>0) 이므로 h 는 증가. 따라서 g = h⁻¹ 이고 g(1/2) = 1, g(27/4) = 3.",
+    "역함수의 적분(넓이 관계): ∫_{1/2}^{27/4} g(t) dt = 3·(27/4) − 1·(1/2) − ∫_1^3 h(s) ds.  (치환 t = h(s), dt = h'(s)ds 로 ∫_1^3 s h'(s) ds 를 부분적분해도 같은 식)",
+    "∫_1^3 s³/(1+s) ds = ∫_1^3 (s² − s + 1 − 1/(1+s)) ds = [s³/3 − s²/2 + s − ln(1+s)]_1^3 = 20/3 − ln 2.",
+    "따라서 ∫_{1/2}^{27/4} g(t) dt = 81/4 − 1/2 − 20/3 + ln 2 = 157/12 + ln 2.  정답 ⑤"
+  ],
+  "scenes": {
+    "s1": {
+      "title": "P 를 끌며 H, T 를 보기",
+      "view": [
+        -1.2,
+        5,
+        4.2,
+        -1.5
+      ],
+      "objects": [
+        {
+          "id": "curve_f",
+          "type": "function",
+          "expr": "0.5*x^2 - x + log(1+x)",
+          "domain": [
+            -0.95,
+            4.2
+          ],
+          "reveal": "after-predict"
+        },
+        {
+          "id": "s",
+          "type": "slider",
+          "range": [
+            0.2,
+            4
+          ],
+          "init": 2.5,
+          "step": 0.01,
+          "label": "s"
+        },
+        {
+          "id": "P",
+          "type": "point-on-curve",
+          "curve": "curve_f",
+          "x": "s",
+          "label": "P(s, f(s))",
+          "draggable": true,
+          "binds": "s"
+        },
+        {
+          "id": "tan_P",
+          "type": "tangent-at",
+          "curve": "curve_f",
+          "point": "P"
+        },
+        {
+          "id": "H",
+          "type": "point",
+          "coords": [
+            "0",
+            "f(s)"
+          ],
+          "label": "H (수선의 발)"
+        },
+        {
+          "id": "T",
+          "type": "intersections",
+          "of": [
+            "tan_P",
+            "y-axis"
+          ],
+          "label": "T (접선의 y절편)"
+        },
+        {
+          "id": "seg_HP",
+          "type": "segment",
+          "from": "H",
+          "to": "P",
+          "style": "dashed",
+          "measure": true,
+          "label": "s"
+        },
+        {
+          "id": "seg_HT",
+          "type": "segment",
+          "from": "H",
+          "to": "T",
+          "style": "bold",
+          "measure": true,
+          "label": "t"
+        },
+        {
+          "id": "tri",
+          "type": "polygon",
+          "vertices": [
+            "H",
+            "T",
+            "P"
+          ],
+          "fill": 0.08
+        },
+        {
+          "id": "readout_slope",
+          "type": "label",
+          "text": "접선의 기울기 f'(s) = {slope(tan_P):.3f}",
+          "anchor": "top-left"
+        },
+        {
+          "id": "readout_ratio",
+          "type": "label",
+          "text": "t / s = {len(seg_HT)/len(seg_HP):.3f}",
+          "anchor": "top-left",
+          "reveal": "after-checkpoint"
+        }
+      ],
+      "notes": "t/s 눈금은 체크포인트(기울기 1 도달) 이후에만 열린다. 그 전에는 학생이 t, s, 기울기 세 눈금을 보고 스스로 관계를 추측해야 한다."
+    },
+    "s2": {
+      "title": "s → t 를 거꾸로 읽기",
+      "view": [
+        -0.5,
+        8,
+        4,
+        -0.8
+      ],
+      "axes": {
+        "x": "s",
+        "y": "t"
+      },
+      "objects": [
+        {
+          "id": "curve_h",
+          "type": "function",
+          "expr": "x^3/(1+x)",
+          "domain": [
+            0,
+            4
+          ],
+          "reveal": "after-predict",
+          "label": "t = h(s)"
+        },
+        {
+          "id": "t",
+          "type": "slider",
+          "range": [
+            0.5,
+            6.75
+          ],
+          "init": 0.5,
+          "step": 0.01,
+          "label": "t"
+        },
+        {
+          "id": "line_t",
+          "type": "function",
+          "expr": "t",
+          "reveal": "after-predict",
+          "label": "y = t"
+        },
+        {
+          "id": "pts_ht",
+          "type": "intersections",
+          "of": [
+            "curve_h",
+            "line_t"
+          ],
+          "count-label": true,
+          "show-x": true,
+          "x-label": "g(t) = {x:.2f}"
+        },
+        {
+          "id": "mark_lo",
+          "type": "label",
+          "text": "t = 1/2",
+          "at": [
+            0,
+            0.5
+          ]
+        },
+        {
+          "id": "mark_hi",
+          "type": "label",
+          "text": "t = 27/4",
+          "at": [
+            0,
+            6.75
+          ]
+        }
+      ]
+    },
+    "s3": {
+      "title": "역함수의 적분을 넓이로",
+      "view": [
+        -0.5,
+        8,
+        4,
+        -0.8
+      ],
+      "axes": {
+        "x": "s",
+        "y": "t"
+      },
+      "objects": [
+        {
+          "id": "curve_h",
+          "type": "function",
+          "expr": "x^3/(1+x)",
+          "domain": [
+            0,
+            4
+          ],
+          "reveal": "after-predict",
+          "label": "t = h(s)"
+        },
+        {
+          "id": "region_g",
+          "type": "area-between",
+          "left": "y-axis",
+          "right": "curve_h",
+          "y-range": [
+            0.5,
+            6.75
+          ],
+          "style": "hatched",
+          "label": "∫ g(t) dt",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "rect_big",
+          "type": "polygon",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              6.75
+            ],
+            [
+              0,
+              6.75
+            ]
+          ],
+          "toggle": [
+            "off",
+            "+",
+            "-"
+          ],
+          "label": "3 × 27/4"
+        },
+        {
+          "id": "rect_small",
+          "type": "polygon",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              0.5
+            ],
+            [
+              0,
+              0.5
+            ]
+          ],
+          "toggle": [
+            "off",
+            "+",
+            "-"
+          ],
+          "label": "1 × 1/2"
+        },
+        {
+          "id": "under_h",
+          "type": "area-between",
+          "top": "curve_h",
+          "bottom": "x-axis",
+          "x-range": [
+            1,
+            3
+          ],
+          "toggle": [
+            "off",
+            "+",
+            "-"
+          ],
+          "label": "∫₁³ h(s) ds"
+        },
+        {
+          "id": "probe_Q",
+          "type": "point",
+          "coords": [
+            0.5,
+            3
+          ],
+          "draggable": true,
+          "label": "Q"
+        },
+        {
+          "id": "readout_sum",
+          "type": "label",
+          "text": "현재 조합의 넓이 = {signed_area:.4f}",
+          "anchor": "top-left"
+        },
+        {
+          "id": "readout_target",
+          "type": "label",
+          "text": "∫g 영역 넓이 = {area(region_g):.4f}",
+          "anchor": "top-left",
+          "reveal": "after-checkpoint"
+        }
+      ],
+      "notes": "타일 토글의 부호 조합이 (+, −, −) 일 때만 겹침이 완전해지고 signed_area 가 region_g 넓이와 일치한다. 이 수치(13.7765…)는 체크포인트 이후에만 보인다."
+    }
+  },
+  "verification": {
+    "tool": "sympy",
+    "script": "verify_2026_수능_28.py",
+    "all_ok": true,
+    "claims": [
+      {
+        "claim": "f'(x) = x^2/(1+x)",
+        "ok": true
+      },
+      {
+        "claim": "f(0) = 0, f'(0) = 0 (원점에서 정류점)",
+        "ok": true
+      },
+      {
+        "claim": "f'(x)=0 의 해는 x=0 뿐 (극값 0개)",
+        "ok": true
+      },
+      {
+        "claim": "x>0 에서 f'(x) > 0 (증가)",
+        "ok": true
+      },
+      {
+        "claim": "x→-1+ 에서 f→-∞ (왼쪽 끝 아래)",
+        "ok": true
+      },
+      {
+        "claim": "x→∞ 에서 f→+∞",
+        "ok": true
+      },
+      {
+        "claim": "f''(x) = (x^2+2x)/(1+x)^2 → x>0 에서 아래로 볼록",
+        "ok": true
+      },
+      {
+        "claim": "H(0,f(s)) 와 T(0, f(s)-s f'(s)) 의 거리 = s·f'(s)",
+        "ok": true
+      },
+      {
+        "claim": "t = h(s) = s^3/(1+s)",
+        "ok": true
+      },
+      {
+        "claim": "s>0 에서 H 가 T 보다 위 (s f'(s) > 0 → 거리는 양수)",
+        "ok": true
+      },
+      {
+        "claim": "f'(s)=1 인 양수 s 는 (1+√5)/2 ≈ 1.618 하나",
+        "ok": true
+      },
+      {
+        "claim": "그 s 에서 t = s (삼각형 HTP 가 이등변)",
+        "ok": true
+      },
+      {
+        "claim": "s=2 일 때 기울기 4/3, t = 8/3 = s·기울기",
+        "ok": true
+      },
+      {
+        "claim": "h'(s) = (2s^3+3s^2)/(1+s)^2",
+        "ok": true
+      },
+      {
+        "claim": "s>0 에서 h'(s) > 0 (h 증가 → g 는 h 의 역함수)",
+        "ok": true
+      },
+      {
+        "claim": "s>0 에서 h''(s) > 0 (아래로 볼록)",
+        "ok": true
+      },
+      {
+        "claim": "h(0) = 0",
+        "ok": true
+      },
+      {
+        "claim": "h(1) = 1/2  → g(1/2) = 1",
+        "ok": true
+      },
+      {
+        "claim": "h(3) = 27/4 → g(27/4) = 3",
+        "ok": true
+      },
+      {
+        "claim": "h(s) = 1/2 의 양의 실근은 s = 1 하나",
+        "ok": true
+      },
+      {
+        "claim": "h(s) = 27/4 의 양의 실근은 s = 3 하나",
+        "ok": true
+      },
+      {
+        "claim": "h(s) = 8/3 의 양의 실근은 s = 2 하나",
+        "ok": true
+      },
+      {
+        "claim": "∫_1^3 h(s) ds = 20/3 - ln 2",
+        "ok": true
+      },
+      {
+        "claim": "s^3/(1+s) = s^2 - s + 1 - 1/(1+s) (나눗셈)",
+        "ok": true
+      },
+      {
+        "claim": "큰 직사각형 3·27/4 = 81/4",
+        "ok": true
+      },
+      {
+        "claim": "작은 직사각형 1·1/2 = 1/2",
+        "ok": true
+      },
+      {
+        "claim": "∫_{1/2}^{27/4} g(t) dt = 81/4 - 1/2 - (20/3 - ln2) = 157/12 + ln 2 (넓이 관계)",
+        "ok": true
+      },
+      {
+        "claim": "치환 ∫_1^3 s h'(s) ds 도 157/12 + ln 2 (독립 검산)",
+        "ok": true
+      },
+      {
+        "claim": "수치 적분 ∫ g(t) dt ≈ 13.7765 = 157/12 + ln2",
+        "ok": true
+      },
+      {
+        "claim": "정답은 ⑤ (다른 보기와 일치하지 않음)",
+        "ok": true
+      }
+    ]
+  }
+}

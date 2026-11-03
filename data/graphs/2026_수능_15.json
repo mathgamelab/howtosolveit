@@ -1,0 +1,893 @@
+{
+  "id": "2026_수능_공통_15",
+  "source": {
+    "exam": "2026_수능",
+    "number": 15,
+    "score": 4,
+    "answer": "④",
+    "page": "data/pages/2026_수능/p-06.png"
+  },
+  "statement": "함수 $f(x)$가\n$$f(x)=\\begin{cases} -x^2 & (x<0) \\\\ x^2-x & (x\\ge 0)\\end{cases}$$\n이고, 양수 $a$에 대하여 함수 $g(x)$를\n$$g(x)=\\begin{cases} ax+a & (x<-1) \\\\ 0 & (-1\\le x<1) \\\\ ax-a & (x\\ge 1)\\end{cases}$$\n이라 하자. 함수 $h(x)=\\displaystyle\\int_0^x \\{g(t)-f(t)\\}dt$가 오직 하나의 극값을 갖도록 하는 $a$의 최댓값을 $k$라 하자. $a=k$일 때, $k+h(3)$의 값은? [4점]\n① $\\dfrac{9}{2}$ ② $\\dfrac{11}{2}$ ③ $\\dfrac{13}{2}$ ④ $\\dfrac{15}{2}$ ⑤ $\\dfrac{17}{2}$",
+  "understand": {
+    "given": [
+      "f(x) = -x^2 (x<0), x^2-x (x\\ge 0)  — 원점에서 이어지는 두 포물선 조각",
+      "g(x) = a(x+1) (x<-1), 0 (-1\\le x<1), a(x-1) (x\\ge 1)  — 가운데가 평평한 꺾은선, a>0 은 양쪽 기울기",
+      "h(x) = \\int_0^x \\{g(t)-f(t)\\}dt"
+    ],
+    "unknown": "a=k 일 때 k+h(3)  (k = h가 극값을 오직 하나 갖게 하는 a의 최댓값)",
+    "condition": "h(x)가 극값을 오직 하나 가진다",
+    "notice": "구하는 것은 두 조각이다: k 와 h(3). h(3) 은 k 가 정해져야 계산할 수 있으므로 k 가 먼저다."
+  },
+  "analysis": [
+    {
+      "id": "q0",
+      "question": "k+h(3) 을 알려면 무엇을 알아야 하나?",
+      "answer": "k 와, a=k 일 때의 h(3). h(3) 은 a 에 따라 달라지므로 k 가 먼저다.",
+      "needs": [
+        "q1",
+        "q7"
+      ],
+      "heuristic": "work-backward"
+    },
+    {
+      "id": "q1",
+      "question": "k(극값이 오직 하나가 되게 하는 a의 최댓값)를 알려면 무엇을 알아야 하나?",
+      "answer": "a 를 키워 갈 때 h 의 극값 개수가 언제 1 에서 벗어나는지.",
+      "needs": [
+        "q2"
+      ],
+      "heuristic": "vary-parameter"
+    },
+    {
+      "id": "q2",
+      "question": "h 의 극값 개수를 알려면 무엇을 알아야 하나? h 는 적분으로 정의되어 있는데, h 의 그래프를 그리지 않고 극값을 셀 수 있나?",
+      "answer": "h'(x)=g(x)-f(x) 이므로 h 의 극값은 h' 의 부호가 바뀌는 점, 즉 y=g(x) 와 y=f(x) 가 서로 '가로지르는' 점이다. 따라서 문제는 '두 그래프가 가로지르는 횟수가 a 에 따라 어떻게 변하나'로 바뀐다.",
+      "needs": [
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "heuristic": "restate | related-problem"
+    },
+    {
+      "id": "q3",
+      "question": "가로지르는 횟수를 세려면 두 그래프를 알아야 한다. f 의 모양은?",
+      "needs": [],
+      "heuristic": "draw-figure",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "f(x) 의 개형을 손으로 그려 보세요. x<0 쪽과 x≥0 쪽은 각각 어떤 포물선인가요? 원점에서 이어지나요, 꺾이나요? f=0 이 되는 x 와 최솟값이 생기는 x 를 표시하세요.",
+          "accept": {
+            "left_piece": {
+              "shape": "concave-down-parabola",
+              "vertex": [
+                0,
+                0
+              ],
+              "sign": "-"
+            },
+            "right_piece": {
+              "shape": "concave-up-parabola",
+              "zeros": [
+                0,
+                1
+              ],
+              "min_at": 0.5,
+              "min_value": -0.25
+            },
+            "continuous_at_0": true,
+            "corner_at_0": true
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "object": "sketch_f",
+            "target": "curve_f",
+            "tolerance": 0.3
+          }
+        },
+        "action": "스케치를 제출하면 f 의 실제 곡선이 열립니다. 자신의 스케치와 겹쳐 보고, 원점 근처(기울기 0 → -1)와 x=1/2 의 골짜기(-1/4)를 확인하세요.",
+        "checkpoint": {
+          "type": "sketch-matches",
+          "object": "sketch_f",
+          "target": "curve_f",
+          "tolerance": 0.3
+        },
+        "noticing": "f 는 x<0 에서도, 0≤x≤1 에서도 0 이하이다. 즉 [-1,1] 구간에서 f 는 x축(=g) 아래에 머물고 x=0, x=1 에서만 x축에 닿는다."
+      }
+    },
+    {
+      "id": "q4",
+      "question": "g 의 모양은? a 는 그래프의 어디를 바꾸나?",
+      "needs": [],
+      "heuristic": "draw-figure | vary-parameter",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "a=2 라고 하고 g(x) 의 개형을 그려 보세요. 세 조각은 어디서 만나나요(끊기나요)? a 를 키우면 어느 부분이 어떻게 움직일지 화살표로 표시하세요.",
+          "accept": {
+            "middle_piece": {
+              "shape": "flat",
+              "value": 0,
+              "interval": [
+                -1,
+                1
+              ]
+            },
+            "hinges": [
+              [
+                -1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "continuous": true,
+            "left_ray": {
+              "slope_sign": "+",
+              "goes": "down-left"
+            },
+            "right_ray": {
+              "slope_sign": "+",
+              "goes": "up-right"
+            },
+            "a_changes": "both-ray-slopes-only"
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "object": "sketch_g",
+            "target": "curve_g",
+            "tolerance": 0.3
+          }
+        },
+        "action": "스케치를 제출하면 g 의 꺾은선이 열립니다. 슬라이더 a 를 좌우로 움직여, 움직이지 않는 부분(가운데 평평한 조각, 힌지점 (-1,0),(1,0))과 움직이는 부분(두 반직선의 기울기)을 눈으로 확인하세요.",
+        "checkpoint": {
+          "type": "slider-in-range",
+          "object": "a",
+          "range": [
+            0.5,
+            6
+          ],
+          "require-travel": true
+        },
+        "noticing": "a 는 두 반직선을 힌지 (-1,0),(1,0) 을 중심으로 '회전'시킬 뿐이다. 가운데 [-1,1] 에서는 g=0 으로 고정되어 f 와의 관계가 a 와 무관하다."
+      }
+    },
+    {
+      "id": "q5",
+      "question": "a 를 바꾸면 두 그래프가 가로지르는 점의 개수는 어떻게 변하나? (결정적 발견)",
+      "needs": [
+        "q5a",
+        "q5b"
+      ],
+      "heuristic": "vary-parameter | special-case(접할 때)",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "슬라이더를 움직이기 전에 예측하세요. (1) 오른쪽 반직선 y=a(x-1) 과 포물선 y=x^2-x 는 a 가 커질수록 몇 번 가로지르나요? (2) 왼쪽 반직선 y=a(x+1) 과 y=-x^2 은 a 가 작을 때/클 때 각각 몇 번 가로지르나요? (3) 그 개수가 바뀌는 순간 두 그래프는 어떤 관계인가요?",
+          "accept": {
+            "right_crossings": {
+              "any_a": 1
+            },
+            "left_crossings": {
+              "small_a": 0,
+              "large_a": 2
+            },
+            "transition": "tangent"
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "object": "prediction_table",
+            "target": "crossing_table",
+            "tolerance": 0
+          }
+        },
+        "action": "슬라이더 a 를 0.5 에서 6 까지 천천히 움직이며 왼쪽/오른쪽 교점 수 라벨을 지켜보세요. 왼쪽 반직선이 포물선 y=-x^2 에 '막 닿는' 순간에 슬라이더를 멈추세요. 그때의 a 와 닿는 점의 좌표를 읽어 보세요.",
+        "checkpoint": {
+          "type": "tangent-reached",
+          "object": "g_left",
+          "target": "f_left",
+          "tolerance": 0.05
+        },
+        "noticing": "오른쪽은 a 가 무엇이든 늘 정확히 한 번 가로지른다(포물선이 결국 직선을 이긴다). 왼쪽은 a 가 작을 때 전혀 만나지 않다가, 접하는 순간부터 두 번 가로지른다. 따라서 극값 개수는 1 → 3 으로 '접하는 순간'에 바뀐다."
+      }
+    },
+    {
+      "id": "q5a",
+      "question": "x=0, x=1 에서도 g=f 인데, 그 점들은 h 의 극값인가?",
+      "needs": [],
+      "heuristic": "special-case | check-definition",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "x=0 의 바로 왼쪽과 바로 오른쪽에서 h'(x)=g(x)-f(x) 의 부호는 각각 무엇인가요? x=1 에서는요? (a 와 상관 있나요?)",
+          "accept": {
+            "sign_near_0": [
+              "+",
+              "+"
+            ],
+            "sign_near_1": [
+              "+",
+              "+"
+            ],
+            "extremum_at_0": false,
+            "extremum_at_1": false,
+            "depends_on_a": false
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "object": "sign_prediction",
+            "target": "sign_strip",
+            "tolerance": 0
+          }
+        },
+        "action": "'부호 띠' 토글을 켜서 g-f 가 양수인 구간과 음수인 구간이 색으로 칠해지는 것을 보세요. x=0, x=1 에서 색이 바뀌는지 확인하세요. (a 를 1 보다 작게도 움직여 보세요.)",
+        "checkpoint": {
+          "type": "count-equals",
+          "object": "sign_changes_mid",
+          "value": 0
+        },
+        "noticing": "만나기만 하고 가로지르지 않으면(f 가 x축에 닿았다가 되돌아가면) h' 의 부호가 안 바뀌므로 극값이 아니다. '교점 수'가 아니라 '가로지르는 횟수'를 세야 한다. 이 사실은 접점에도 그대로 적용된다."
+      }
+    },
+    {
+      "id": "q5b",
+      "question": "왼쪽 반직선이 포물선 y=-x^2 에 접하는 순간의 a 는 얼마이고, 그 순간 극값 개수는 1 인가 3 인가?",
+      "needs": [],
+      "heuristic": "compute | boundary-case",
+      "answer": "x<-1 에서 g-f = x^2+ax+a. 판별식 a^2-4a=0 에서 a=4, 접점 (-2,-4). 접점에서는 가로지르지 않으므로(q5a 와 같은 이유) 극값 개수는 여전히 1 → a=4 도 허용되고 최댓값 k=4 가 존재한다.",
+      "verified": {
+        "a_tangent": "4",
+        "tangent_point": [
+          "-2",
+          "-4"
+        ],
+        "slope_check": "f'(-2)=4",
+        "extrema_count_at_a4": 1,
+        "extrema_count_at_a4.01": 3,
+        "k": "4"
+      }
+    },
+    {
+      "id": "q7",
+      "question": "a=k=4 일 때 h(3) 을 알려면 무엇을 알아야 하나?",
+      "needs": [
+        "q8"
+      ],
+      "heuristic": "draw-figure | decompose",
+      "discover": {
+        "scene": "s2",
+        "predict": {
+          "prompt": "h(3)=∫_0^3 (g-f)dt 입니다. 0≤x≤3 에서 g-f 의 부호는? 그러면 h(3) 은 어떤 영역의 넓이인가요? 그 영역은 몇 조각으로 나뉘나요(어디서)?",
+          "accept": {
+            "sign_on_[0,3]": "+",
+            "is_pure_area": true,
+            "pieces": 2,
+            "split_at": [
+              1
+            ]
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "object": "area_prediction",
+            "target": "area_h3",
+            "tolerance": 0
+          }
+        },
+        "action": "x축 위의 점 X 를 0 에서 오른쪽으로 끌어 보세요. g 와 f 사이가 칠해지며 h(X) 가 누적됩니다. X=3 에 놓고, 칠해진 영역이 x=1 에서 두 조각(포물선-x축 사이, 포물선-직선 사이)으로 나뉘는 것을 확인하세요.",
+        "checkpoint": {
+          "type": "point-in-region",
+          "object": "X",
+          "region": [
+            2.95,
+            3.05
+          ]
+        },
+        "noticing": "h(3) 은 작은 조각 ∫_0^1 (t-t^2)dt 와 큰 조각 ∫_1^3 (t-1)(4-t)dt 의 합이다. 둘 다 양수라 부호 걱정 없이 넓이로 더하면 된다."
+      }
+    },
+    {
+      "id": "q8",
+      "question": "두 조각의 넓이는 각각 얼마인가?",
+      "needs": [],
+      "heuristic": "compute",
+      "verified": {
+        "piece_0_1": "1/6",
+        "piece_1_3": "10/3",
+        "h3": "7/2",
+        "k_plus_h3": "15/2",
+        "choice": "④"
+      }
+    },
+    {
+      "id": "q9",
+      "question": "(되돌아보기) a=4 일 때 h 의 그래프는 정말 극값이 하나뿐인가? x=-2, 0, 1 에서는 어떤 모양인가?",
+      "needs": [],
+      "heuristic": "look-back",
+      "discover": {
+        "scene": "s3",
+        "predict": {
+          "prompt": "a=4 일 때 h 의 증감을 예측해 보세요. 어디까지 증가하고 어디서부터 감소하나요? h'=0 인 x=-2, 0, 1 에서 h 의 그래프는 어떤 모양일까요?",
+          "accept": {
+            "increasing_until": 4,
+            "decreasing_after": 4,
+            "extrema_count": 1,
+            "flat_but_no_turn_at": [
+              -2,
+              0,
+              1
+            ]
+          },
+          "checkpoint": {
+            "type": "sketch-matches",
+            "object": "sketch_h",
+            "target": "curve_h",
+            "tolerance": 0.4
+          }
+        },
+        "action": "예측을 제출하면 h 의 곡선이 열립니다. 슬라이더 a 를 4 보다 조금 크게(4.5) 올려, x<-1 쪽에 작은 '혹'(극대·극소 한 쌍)이 생기는 것을 보세요. 다시 4 로 내리면 혹이 평평한 변곡 모양으로 합쳐집니다.",
+        "checkpoint": {
+          "type": "count-equals",
+          "object": "extrema_h",
+          "value": 1
+        },
+        "noticing": "접하는 순간 극대·극소 한 쌍이 하나로 합쳐져 사라진다. 그래서 '오직 하나'의 경계가 접하는 a 이고, 경계값 자체도 포함된다."
+      }
+    }
+  ],
+  "synthesis": [
+    "h'(x)=g(x)-f(x) 이므로 h 의 극값은 g-f 의 부호가 바뀌는 점이다.",
+    "-1≤x<0: g-f=x^2>0, 0≤x<1: g-f=x-x^2≥0 (x=0,1 에서 0 이지만 부호 불변 → 극값 아님).",
+    "x≥1: g-f=(x-1)(a-x). a>1 이면 x=a 에서, a≤1 이면 x=1 에서 +→- 로 한 번 바뀜 → 극값 1개 (항상).",
+    "x<-1: g-f=x^2+ax+a. 판별식 a^2-4a<0 (0<a<4) 이면 부호 변화 없음, a=4 이면 x=-2 에서 접함(부호 불변), a>4 이면 x<-1 에 두 근 → 극값 2개 추가.",
+    "따라서 극값이 오직 하나 ⇔ 0<a≤4, k=4.",
+    "a=4: h(3)=∫_0^1 (t-t^2)dt + ∫_1^3 (t-1)(4-t)dt = 1/6 + 10/3 = 7/2.",
+    "k+h(3) = 4 + 7/2 = 15/2  → ④"
+  ],
+  "scenes": {
+    "s1": {
+      "title": "두 그래프가 가로지르는 횟수 세기",
+      "view": [
+        -6,
+        6,
+        6,
+        -6
+      ],
+      "objects": [
+        {
+          "id": "a",
+          "type": "slider",
+          "range": [
+            0.5,
+            6
+          ],
+          "init": 2,
+          "step": 0.05,
+          "label": "a"
+        },
+        {
+          "id": "f_left",
+          "type": "function",
+          "expr": "-x^2",
+          "domain": [
+            -6,
+            0
+          ],
+          "reveal": "after-predict",
+          "predict": "q3",
+          "style": "f"
+        },
+        {
+          "id": "f_right",
+          "type": "function",
+          "expr": "x^2-x",
+          "domain": [
+            0,
+            6
+          ],
+          "reveal": "after-predict",
+          "predict": "q3",
+          "style": "f"
+        },
+        {
+          "id": "curve_f",
+          "type": "group",
+          "of": [
+            "f_left",
+            "f_right"
+          ],
+          "label": "y=f(x)"
+        },
+        {
+          "id": "g_left",
+          "type": "function",
+          "expr": "a*x+a",
+          "domain": [
+            -6,
+            -1
+          ],
+          "reveal": "after-predict",
+          "predict": "q4",
+          "style": "g"
+        },
+        {
+          "id": "g_mid",
+          "type": "function",
+          "expr": "0",
+          "domain": [
+            -1,
+            1
+          ],
+          "reveal": "after-predict",
+          "predict": "q4",
+          "style": "g"
+        },
+        {
+          "id": "g_right",
+          "type": "function",
+          "expr": "a*x-a",
+          "domain": [
+            1,
+            6
+          ],
+          "reveal": "after-predict",
+          "predict": "q4",
+          "style": "g"
+        },
+        {
+          "id": "curve_g",
+          "type": "group",
+          "of": [
+            "g_left",
+            "g_mid",
+            "g_right"
+          ],
+          "label": "y=g(x)"
+        },
+        {
+          "id": "hinges",
+          "type": "point-on-curve",
+          "points": [
+            [
+              -1,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "label": "힌지",
+          "fixed": true
+        },
+        {
+          "id": "pts_left",
+          "type": "intersections",
+          "of": [
+            "g_left",
+            "f_left"
+          ],
+          "count-label": "왼쪽 교점",
+          "crossing-only": true
+        },
+        {
+          "id": "pts_right",
+          "type": "intersections",
+          "of": [
+            "g_right",
+            "f_right"
+          ],
+          "count-label": "오른쪽 교점",
+          "crossing-only": true
+        },
+        {
+          "id": "pts_mid",
+          "type": "intersections",
+          "of": [
+            "g_mid",
+            "curve_f"
+          ],
+          "count-label": "가운데 접촉점",
+          "crossing-only": false,
+          "style": "hollow"
+        },
+        {
+          "id": "sign_strip",
+          "type": "area-between",
+          "of": [
+            "curve_g",
+            "curve_f"
+          ],
+          "range": [
+            -6,
+            6
+          ],
+          "color-by-sign": true,
+          "toggle": "부호 띠",
+          "default": "off"
+        },
+        {
+          "id": "sign_changes_mid",
+          "type": "label",
+          "text": "[-1,1] 에서 부호 변화: {count}",
+          "bind": "sign-changes(sign_strip, [-1, 1])"
+        },
+        {
+          "id": "crossing_table",
+          "type": "label",
+          "text": "가로지름 — 왼쪽 {pts_left.count} / 오른쪽 {pts_right.count} / 합 {total}"
+        },
+        {
+          "id": "tangent_marker",
+          "type": "tangent-at",
+          "curve": "f_left",
+          "x": -2,
+          "reveal": "on-checkpoint",
+          "checkpoint": "q5",
+          "label": "접점 (-2,-4), a=4"
+        }
+      ]
+    },
+    "s2": {
+      "title": "h(3) 을 넓이로 보기 (a=4 고정)",
+      "view": [
+        -1,
+        7,
+        5,
+        -2
+      ],
+      "objects": [
+        {
+          "id": "a",
+          "type": "slider",
+          "range": [
+            4,
+            4
+          ],
+          "init": 4,
+          "locked": true,
+          "label": "a=k=4"
+        },
+        {
+          "id": "f_right",
+          "type": "function",
+          "expr": "x^2-x",
+          "domain": [
+            -1,
+            5
+          ],
+          "reveal": "after-predict",
+          "predict": "q3",
+          "style": "f"
+        },
+        {
+          "id": "g_mid",
+          "type": "function",
+          "expr": "0",
+          "domain": [
+            -1,
+            1
+          ],
+          "reveal": "after-predict",
+          "predict": "q4",
+          "style": "g"
+        },
+        {
+          "id": "g_right",
+          "type": "function",
+          "expr": "4*x-4",
+          "domain": [
+            1,
+            5
+          ],
+          "reveal": "after-predict",
+          "predict": "q4",
+          "style": "g"
+        },
+        {
+          "id": "curve_g",
+          "type": "group",
+          "of": [
+            "g_mid",
+            "g_right"
+          ]
+        },
+        {
+          "id": "X",
+          "type": "point-on-curve",
+          "curve": "x-axis",
+          "init": 0,
+          "range": [
+            0,
+            5
+          ],
+          "draggable": true,
+          "label": "X"
+        },
+        {
+          "id": "area_h3",
+          "type": "area-between",
+          "of": [
+            "curve_g",
+            "f_right"
+          ],
+          "range": [
+            0,
+            "X"
+          ],
+          "color-by-sign": true,
+          "split-at": [
+            1
+          ]
+        },
+        {
+          "id": "hX",
+          "type": "label",
+          "text": "h(X) = {area_h3.value}",
+          "bind": "area_h3"
+        },
+        {
+          "id": "split_line",
+          "type": "segment",
+          "from": [
+            1,
+            0
+          ],
+          "to": [
+            1,
+            0.0
+          ],
+          "style": "dashed",
+          "label": "x=1"
+        }
+      ]
+    },
+    "s3": {
+      "title": "되돌아보기 — h 의 그래프",
+      "view": [
+        -5,
+        6,
+        6,
+        -4
+      ],
+      "objects": [
+        {
+          "id": "a",
+          "type": "slider",
+          "range": [
+            3,
+            5
+          ],
+          "init": 4,
+          "step": 0.05,
+          "label": "a"
+        },
+        {
+          "id": "curve_h",
+          "type": "function",
+          "expr": "integral(g(t;a)-f(t), t, 0, x)",
+          "domain": [
+            -5,
+            6
+          ],
+          "reveal": "after-predict",
+          "predict": "q9",
+          "style": "h",
+          "pieces-at-a4": {
+            "x<-1": "x^3/3+2x^2+4x+2",
+            "-1<=x<0": "x^3/3",
+            "0<=x<1": "x^2/2-x^3/3",
+            "x>=1": "-x^3/3+5x^2/2-4x+2"
+          }
+        },
+        {
+          "id": "extrema_h",
+          "type": "intersections",
+          "of": [
+            "curve_h'",
+            "x-axis"
+          ],
+          "crossing-only": true,
+          "count-label": "h 의 극값 개수"
+        },
+        {
+          "id": "flat_pts",
+          "type": "point-on-curve",
+          "curve": "curve_h",
+          "points": [
+            [
+              -2,
+              "-2/3"
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              "1/6"
+            ]
+          ],
+          "style": "hollow",
+          "label": "h'=0 이지만 극값 아님",
+          "reveal": "after-predict",
+          "predict": "q9"
+        },
+        {
+          "id": "max_pt",
+          "type": "point-on-curve",
+          "curve": "curve_h",
+          "x": 4,
+          "label": "극대 (4, 14/3)",
+          "reveal": "after-predict",
+          "predict": "q9"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "tool": "sympy",
+    "script": "verify_2026_수능_15.py",
+    "all_pass": true,
+    "claims": [
+      {
+        "claim": "f는 x=0에서 연속 (f(0)=0)",
+        "ok": true
+      },
+      {
+        "claim": "f'(0-)=0, f'(0+)=-1 (원점에서 꺾임)",
+        "ok": true
+      },
+      {
+        "claim": "f는 [0,1]에서 x=1/2일 때 최솟값 -1/4",
+        "ok": true
+      },
+      {
+        "claim": "f의 영점은 0, 1",
+        "ok": true
+      },
+      {
+        "claim": "g는 모든 a에 대해 x=-1, x=1에서 연속 (힌지 (-1,0),(1,0))",
+        "ok": true
+      },
+      {
+        "claim": "h'(x)=g(x)-f(x) (x>1 조각에서 미분으로 확인)",
+        "ok": true
+      },
+      {
+        "claim": "x<-1: g-f = x^2+ax+a",
+        "ok": true
+      },
+      {
+        "claim": "x^2+ax+a 의 판별식 = a^2-4a, a=4에서 0",
+        "ok": true
+      },
+      {
+        "claim": "a<4이면 왼쪽에서 g>f (교점 없음) — a=2 샘플",
+        "ok": true
+      },
+      {
+        "claim": "a=4일 때 접점 x=-2 (중근)",
+        "ok": true
+      },
+      {
+        "claim": "접점 좌표 (-2,-4)",
+        "ok": true
+      },
+      {
+        "claim": "접점에서 기울기 일치: f'(-2)=4=a",
+        "ok": true
+      },
+      {
+        "claim": "a=5이면 왼쪽 교점 2개가 모두 x<-1",
+        "ok": true
+      },
+      {
+        "claim": "-1<=x<1 에서 g-f>=0, 영점은 x=0, x=1뿐",
+        "ok": true
+      },
+      {
+        "claim": "x=0에서 g=f이지만 부호 변화 없음 (극값 아님) — a=2",
+        "ok": true
+      },
+      {
+        "claim": "x>=1: g-f = (x-1)(a-x)",
+        "ok": true
+      },
+      {
+        "claim": "x>=1 쪽에서는 항상 가로지름 1회 (a=1/2)",
+        "ok": true
+      },
+      {
+        "claim": "x>=1 쪽에서는 항상 가로지름 1회 (a=1)",
+        "ok": true
+      },
+      {
+        "claim": "x>=1 쪽에서는 항상 가로지름 1회 (a=2)",
+        "ok": true
+      },
+      {
+        "claim": "x>=1 쪽에서는 항상 가로지름 1회 (a=4)",
+        "ok": true
+      },
+      {
+        "claim": "a=2: 극값 1개",
+        "ok": true
+      },
+      {
+        "claim": "a=4: 극값 1개 (접점은 가로지름 아님)",
+        "ok": true
+      },
+      {
+        "claim": "a=4.5: 극값 3개",
+        "ok": true
+      },
+      {
+        "claim": "a=5: 극값 3개",
+        "ok": true
+      },
+      {
+        "claim": "a=1/2, a=1: 극값 1개",
+        "ok": true
+      },
+      {
+        "claim": "k = 4",
+        "ok": true
+      },
+      {
+        "claim": "∫_0^1 (g-f) dt = 1/6",
+        "ok": true
+      },
+      {
+        "claim": "∫_1^3 (g-f) dt = 10/3 (a=4)",
+        "ok": true
+      },
+      {
+        "claim": "h(3) = 7/2",
+        "ok": true
+      },
+      {
+        "claim": "0<=x<=3 에서 g-f>=0 (h(3)은 순수 넓이)",
+        "ok": true
+      },
+      {
+        "claim": "k + h(3) = 15/2 (④)",
+        "ok": true
+      },
+      {
+        "claim": "a=4: x<4 에서 h'>=0, x>4 에서 h'<0 (x=4에서 유일한 극대)",
+        "ok": true
+      },
+      {
+        "claim": "a=4: h'(-2)=h'(0)=h'(1)=0 이지만 부호 불변 (평평해질 뿐)",
+        "ok": true
+      },
+      {
+        "claim": "a=4: h(x) 조각식 — x<-1: x^3/3+2x^2+4x+2",
+        "ok": true
+      },
+      {
+        "claim": "a=4: h(x) 조각식 — -1<=x<0: x^3/3",
+        "ok": true
+      },
+      {
+        "claim": "a=4: h(x) 조각식 — 0<=x<1: x^2/2-x^3/3",
+        "ok": true
+      },
+      {
+        "claim": "a=4: h(x) 조각식 — x>=1: -x^3/3+5x^2/2-4x+2",
+        "ok": true
+      },
+      {
+        "claim": "조각식으로 h(3)=7/2 재확인",
+        "ok": true
+      },
+      {
+        "claim": "a=4: h(4) = 14/3 (극댓값)",
+        "ok": true
+      }
+    ]
+  }
+}

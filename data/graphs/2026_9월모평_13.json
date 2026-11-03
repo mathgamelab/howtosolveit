@@ -1,0 +1,545 @@
+{
+  "id": "2026_9월모평_공통_13",
+  "source": {
+    "exam": "2026_9월모평",
+    "number": 13,
+    "score": 4,
+    "answer": "④"
+  },
+  "statement": "함수 $f(x)=x^2+6x+12$에 대하여 다음 조건을 만족시키는 모든 정수 $k$의 개수는? [4점]\n[조건] 모든 실수 $a$에 대하여 $\\lim_{x\\to a}\\dfrac{x^2}{(f(x))^2-k(x+2)f(x)}$의 값이 존재한다.\n① 5 ② 6 ③ 7 ④ 8 ⑤ 9",
+  "understand": {
+    "given": [
+      "f(x) = x^2 + 6x + 12",
+      "분수식 \\dfrac{x^2}{(f(x))^2 - k(x+2)f(x)}",
+      "k는 정수"
+    ],
+    "unknown": "조건을 만족시키는 정수 k의 개수",
+    "condition": "모든 실수 a에 대하여 x→a 극한값이 존재한다 (극한이 없는 a가 단 하나도 없어야 한다)"
+  },
+  "analysis": [
+    {
+      "id": "q0",
+      "question": "정수 k의 개수를 알려면 무엇을 알아야 하나? → 조건을 만족시키는 k의 범위(집합)",
+      "needs": [
+        "q1"
+      ],
+      "heuristic": "work-backward"
+    },
+    {
+      "id": "q1",
+      "question": "'모든 a에서 극한이 존재한다'가 깨지는 a는 어디서 생기나? → 분모가 0이 되는 a. 그러면 분모가 0이 되는 x는 어디인가?",
+      "needs": [
+        "q2"
+      ],
+      "heuristic": "work-backward"
+    },
+    {
+      "id": "q2",
+      "question": "분모 (f(x))^2 - k(x+2)f(x) 를 0으로 만드는 x를 알려면? → 공통인수 f(x)로 묶으면 f(x)·{f(x) - k(x+2)}. 두 인수가 각각 0이 되는 x를 알면 된다.",
+      "needs": [
+        "q3",
+        "q4"
+      ],
+      "heuristic": "auxiliary-element"
+    },
+    {
+      "id": "q3",
+      "question": "첫째 인수 f(x)가 0이 되는 x가 있나?",
+      "needs": [],
+      "heuristic": "draw-figure",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "y=f(x)=x^2+6x+12 의 개형을 손으로 그려 보세요. 볼록 방향, 꼭짓점의 위치, x축과 만나는지(만난다면 몇 번) 를 표시하세요.",
+          "accept": {
+            "opens": "up",
+            "vertex": [
+              -3,
+              3
+            ],
+            "x_intercepts": 0,
+            "always_positive": true
+          }
+        },
+        "action": "곡선 위의 점 P를 왼쪽 끝에서 오른쪽 끝까지 끌어 보세요. y좌표가 0 이하로 내려가는 순간이 있나요? 가장 낮은 곳의 좌표를 읽어 보세요.",
+        "checkpoint": {
+          "type": "count-equals",
+          "object": "pts_axis",
+          "target": "curve_f",
+          "value": 0
+        },
+        "noticing": "f(x) = (x+3)^2 + 3 ≥ 3 > 0 이므로 첫째 인수는 절대 0이 되지 않는다. 따라서 분모가 0이 되는 x는 오직 둘째 인수 f(x) - k(x+2) = 0, 즉 '포물선 y=f(x)와 직선 y=k(x+2)가 만나는 x' 뿐이다.",
+        "verified": {
+          "vertex": [
+            "-3",
+            "3"
+          ],
+          "x_intercepts": "0"
+        }
+      }
+    },
+    {
+      "id": "q4",
+      "question": "둘째 인수 f(x) - k(x+2) = 0, 즉 포물선 y=f(x)와 직선 y=k(x+2)가 만나는 x를 알려면? → k에 따라 직선이 어떻게 움직이고, 언제 만나고 언제 안 만나나?",
+      "needs": [
+        "q5"
+      ],
+      "heuristic": "vary-parameter",
+      "discover": {
+        "scene": "s2",
+        "predict": {
+          "prompt": "k가 변할 때 직선 y=k(x+2)는 어떻게 움직일까요? 평행이동인가, 회전인가? k와 관계없이 항상 지나는 점이 있다면 좌표를 적으세요. 그리고 그 점에서 본 포물선이 '위에 떠 있다'면 직선이 포물선을 전혀 안 만나는 k가 있을지 예측해 보세요.",
+          "accept": {
+            "motion": "rotate",
+            "pivot": [
+              -2,
+              0
+            ],
+            "no_intersection_possible": true
+          }
+        },
+        "action": "슬라이더 k를 -6부터 10까지 천천히 움직이며 교점 개수(0, 1, 2)가 바뀌는 순간의 k값을 찾아 적으세요. 교점이 1개가 되는 순간 직선이 포물선과 어떤 관계인지 보세요.",
+        "checkpoint": {
+          "type": "tangent-reached",
+          "object": "line_k",
+          "target": "curve_f",
+          "tolerance": 0.05
+        },
+        "noticing": "직선은 점 (-2, 0)을 축으로 회전한다. 교점 개수는 2 → 1 → 0 → 1 → 2 로 바뀌고, 1개가 되는 순간이 바로 접하는 순간(k = -2, k = 6)이다. 그 사이 -2 < k < 6 에서는 교점이 없으므로 분모가 0이 되는 x가 아예 없고, 극한은 모든 a에서 존재한다.",
+        "verified": {
+          "k_tangent": [
+            "-2",
+            "6"
+          ],
+          "no_intersection_range": "-2 < k < 6"
+        }
+      }
+    },
+    {
+      "id": "q5",
+      "question": "직선이 포물선과 만나는 k는 전부 탈락인가? 분모가 0이 되는 a에서도 극한이 존재할 수 있는 경우는? → 분자 x^2 도 그 a에서 0이 되어 약분될 때. 분자가 0이 되는 x=0 에서 만나는 k가 있나?",
+      "needs": [
+        "q6"
+      ],
+      "heuristic": "special-case",
+      "discover": {
+        "scene": "s3",
+        "predict": {
+          "prompt": "분자 x^2 은 x=0 에서만 0이 됩니다(이중근). 접하는 두 경우(k=-2, k=6) 중 접점의 x좌표가 0인 경우가 있을까요? 있다면 어느 쪽인지, 접점의 좌표를 예측해 보세요.",
+          "accept": {
+            "k_with_tangent_at_x0": 6,
+            "tangent_point": [
+              0,
+              12
+            ],
+            "other_tangent_point": [
+              -4,
+              4
+            ]
+          }
+        },
+        "action": "슬라이더 k를 접하는 두 값에 각각 맞춘 뒤, 접점 T를 x=0 표시선(분자 x^2=0)과 비교하세요. 접점이 표시선 위에 올라오는 k가 몇인지 찾으세요. 또 k를 조금 흔들어 보며, 교점 두 개 중 하나만 x=0 위에 두는 것이 가능한지도 시도해 보세요.",
+        "checkpoint": {
+          "type": "point-in-region",
+          "object": "pt_T",
+          "region": [
+            -0.1,
+            12.3,
+            0.1,
+            11.7
+          ]
+        },
+        "noticing": "k=6 일 때만 접점이 (0, 12), 즉 분자가 0이 되는 x=0 위에 놓인다. 이때 둘째 인수는 x^2 자체가 되어 분자 x^2 과 통째로 약분된다. 반면 k=-2 의 접점은 (-4, 4) 로, x=-4 에서 분자는 16 ≠ 0 이라 극한이 없다. 그리고 직선을 x=0 위의 점 (0,12)를 지나게 하는 순간 기울기는 6으로 고정되어 접할 수밖에 없다 (한 점만 x=0 에 걸치고 다른 교점이 남는 경우는 없다).",
+        "verified": {
+          "k": "6",
+          "tangent_point": [
+            "0",
+            "12"
+          ],
+          "k_minus2_tangent_point": [
+            "-4",
+            "4"
+          ],
+          "g_at_0_zero_iff_k": "6"
+        }
+      }
+    },
+    {
+      "id": "q6",
+      "question": "k=6 일 때 정말로 모든 a에서 극한이 존재하나? 분수식 전체는 어떤 함수가 되나?",
+      "needs": [
+        "q7"
+      ],
+      "heuristic": "special-case",
+      "discover": {
+        "scene": "s4",
+        "predict": {
+          "prompt": "k=6 을 대입하면 분모가 f(x)·x^2 이 됩니다. 분수식을 약분하면 어떤 함수가 될까요? 그 그래프는 x=0 에서 어떻게 보일지(구멍? 끊김? 발산?) 예측하고, x=0 근처의 값을 어림해 보세요.",
+          "accept": {
+            "simplified": "1/(x^2+6x+12)",
+            "at_x0": "removable",
+            "limit_at_0": "1/12"
+          }
+        },
+        "action": "슬라이더 k를 6에 두고 y=h_k(x) 의 x=0 근처를 확대해 보세요. 그 다음 k를 -2, 7 로 옮겨 그래프가 어디서 발산하는지(점 T 의 x좌표와 비교) 확인하세요.",
+        "checkpoint": {
+          "type": "slider-in-range",
+          "object": "k",
+          "range": [
+            5.95,
+            6.05
+          ]
+        },
+        "noticing": "k=6 에서 h_6(x) = 1/f(x) 는 x=0 에서 구멍만 있는 매끈한 곡선이다 (극한값 1/12). k=-2 에서는 x=-4 에서, k=7 에서는 교점 두 곳에서 발산한다. 그러므로 허용되는 k는 '안 만나는 범위 -2 < k < 6' 와 '만나되 x=0 에서만 접하는 k=6' 이다.",
+        "verified": {
+          "h6": "1/(x^2+6x+12)",
+          "limit_h6_at_0": "1/12",
+          "divergence_k_minus2": "x=-4"
+        }
+      }
+    },
+    {
+      "id": "q7",
+      "question": "그렇다면 조건을 만족시키는 정수 k는 몇 개인가?",
+      "needs": [],
+      "heuristic": "compute",
+      "verified": {
+        "open_range_integers": [
+          "-1",
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "extra": [
+          "6"
+        ],
+        "count": "8",
+        "answer": "④"
+      }
+    }
+  ],
+  "synthesis": [
+    "f(x) = (x+3)^2 + 3 > 0 이므로 분모 (f(x))^2 - k(x+2)f(x) = f(x){f(x) - k(x+2)} 가 0이 되는 x는 g(x) = f(x) - k(x+2) = x^2 + (6-k)x + (12-2k) = 0 의 실근뿐이다.",
+    "g(x) = 0 의 실근이 없으면 모든 a에서 극한이 존재한다. 판별식 (6-k)^2 - 4(12-2k) = (k-6)(k+2) < 0 ⇔ -2 < k < 6.",
+    "g(x) = 0 의 실근 α가 있으면 x→α 에서 극한이 존재하기 위해 분자 x^2 도 α에서 0이어야 하므로 α = 0. g(0) = 12 - 2k = 0 ⇔ k = 6 이고, 이때 g(x) = x^2 이라 분수식은 1/f(x) 로 약분되어 모든 a에서 극한이 존재한다.",
+    "k = -2 이면 g(x) = (x+4)^2 이고 x→-4 에서 분자 16 ≠ 0 이므로 극한이 존재하지 않는다.",
+    "따라서 정수 k는 -1, 0, 1, 2, 3, 4, 5 (7개) 와 6 (1개) 으로 모두 8개. 답 ④."
+  ],
+  "scenes": {
+    "s1": {
+      "view": [
+        -9,
+        16,
+        4,
+        -4
+      ],
+      "objects": [
+        {
+          "id": "curve_f",
+          "type": "function",
+          "expr": "x^2+6*x+12",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "pt_P",
+          "type": "point-on-curve",
+          "curve": "curve_f",
+          "init-x": -6,
+          "coords-label": true
+        },
+        {
+          "id": "axis_x",
+          "type": "function",
+          "expr": "0",
+          "reveal": "always",
+          "style": "axis"
+        },
+        {
+          "id": "pts_axis",
+          "type": "intersections",
+          "of": [
+            "curve_f",
+            "axis_x"
+          ],
+          "count-label": true
+        },
+        {
+          "id": "lbl_vertex",
+          "type": "label",
+          "at": [
+            -3,
+            3
+          ],
+          "text": "꼭짓점 (-3, 3)",
+          "reveal": "after-checkpoint"
+        }
+      ]
+    },
+    "s2": {
+      "view": [
+        -9,
+        16,
+        4,
+        -4
+      ],
+      "objects": [
+        {
+          "id": "curve_f",
+          "type": "function",
+          "expr": "x^2+6*x+12",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "k",
+          "type": "slider",
+          "range": [
+            -6,
+            10
+          ],
+          "init": 0,
+          "step": 0.1
+        },
+        {
+          "id": "line_k",
+          "type": "function",
+          "expr": "k*(x+2)",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "lbl_pivot",
+          "type": "label",
+          "at": [
+            -2,
+            0
+          ],
+          "text": "(-2, 0)",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "pts",
+          "type": "intersections",
+          "of": [
+            "curve_f",
+            "line_k"
+          ],
+          "count-label": true
+        }
+      ]
+    },
+    "s3": {
+      "view": [
+        -9,
+        16,
+        4,
+        -4
+      ],
+      "objects": [
+        {
+          "id": "curve_f",
+          "type": "function",
+          "expr": "x^2+6*x+12",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "k",
+          "type": "slider",
+          "range": [
+            -6,
+            10
+          ],
+          "init": 0,
+          "step": 0.1
+        },
+        {
+          "id": "line_k",
+          "type": "function",
+          "expr": "k*(x+2)",
+          "reveal": "after-predict"
+        },
+        {
+          "id": "lbl_pivot",
+          "type": "label",
+          "at": [
+            -2,
+            0
+          ],
+          "text": "(-2, 0)"
+        },
+        {
+          "id": "seg_x0",
+          "type": "segment",
+          "from": [
+            0,
+            -4
+          ],
+          "to": [
+            0,
+            16
+          ],
+          "style": "dashed",
+          "label": "분자 x^2 = 0"
+        },
+        {
+          "id": "pts",
+          "type": "intersections",
+          "of": [
+            "curve_f",
+            "line_k"
+          ],
+          "count-label": true
+        },
+        {
+          "id": "pt_T",
+          "type": "tangent-at",
+          "curve": "curve_f",
+          "line": "line_k",
+          "coords-label": true
+        }
+      ]
+    },
+    "s4": {
+      "view": [
+        -9,
+        1.2,
+        4,
+        -0.8
+      ],
+      "objects": [
+        {
+          "id": "k",
+          "type": "slider",
+          "range": [
+            -6,
+            10
+          ],
+          "init": 6,
+          "step": 0.1
+        },
+        {
+          "id": "curve_h",
+          "type": "function",
+          "expr": "x^2/((x^2+6*x+12)^2-k*(x+2)*(x^2+6*x+12))",
+          "reveal": "after-predict",
+          "hole-at": [
+            0
+          ]
+        },
+        {
+          "id": "seg_x0",
+          "type": "segment",
+          "from": [
+            0,
+            -0.8
+          ],
+          "to": [
+            0,
+            1.2
+          ],
+          "style": "dashed",
+          "label": "x = 0"
+        },
+        {
+          "id": "lbl_h",
+          "type": "label",
+          "at": [
+            -8.5,
+            1.0
+          ],
+          "text": "y = h_k(x) = x^2 / {(f(x))^2 - k(x+2)f(x)}"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "tool": "sympy",
+    "claims": [
+      {
+        "claim": "f(x)=(x+3)^2+3, 꼭짓점 (-3, 3)",
+        "ok": true
+      },
+      {
+        "claim": "f(x)=0 의 실근 없음 (판별식 -12)",
+        "ok": true
+      },
+      {
+        "claim": "f(x)>0 (모든 실수 x): 최솟값 3",
+        "ok": true
+      },
+      {
+        "claim": "분모 = f(x)·{f(x) - k(x+2)}",
+        "ok": true
+      },
+      {
+        "claim": "g(x)=f(x)-k(x+2) = x^2+(6-k)x+(12-2k)",
+        "ok": true
+      },
+      {
+        "claim": "직선 y=k(x+2) 는 k와 무관하게 (-2, 0) 을 지난다",
+        "ok": true
+      },
+      {
+        "claim": "g의 판별식 = (k-6)(k+2)",
+        "ok": true
+      },
+      {
+        "claim": "접하는 k = -2, 6",
+        "ok": true
+      },
+      {
+        "claim": "k=6 일 때 접점 x=0, (0, 12)",
+        "ok": true
+      },
+      {
+        "claim": "k=-2 일 때 접점 x=-4, (-4, 4)",
+        "ok": true
+      },
+      {
+        "claim": "k=6 접선: f'(0)=6, 접선 y=6(x+2)",
+        "ok": true
+      },
+      {
+        "claim": "k=-2 접선: f'(-4)=-2, 접선 y=-2(x+2)",
+        "ok": true
+      },
+      {
+        "claim": "교점 개수: k<-2→2, k=-2→1, -2<k<6→0, k=6→1, k>6→2",
+        "ok": true
+      },
+      {
+        "claim": "g(0)=0 ⇔ k=6 (x=0 에서 만나면 반드시 k=6, 이중근)",
+        "ok": true
+      },
+      {
+        "claim": "k=6: x^2/분모 = 1/f(x)",
+        "ok": true
+      },
+      {
+        "claim": "k=6: x→0 극한 = 1/12",
+        "ok": true
+      },
+      {
+        "claim": "k=-2: a=-4 에서 극한 발산 (분자 16, 분모 (x+4)^2 f)",
+        "ok": true
+      },
+      {
+        "claim": "k=0: 분모의 실근 없음 → 모든 a 에서 극한 존재",
+        "ok": true
+      },
+      {
+        "claim": "k=7: 분모의 실근 2개이고 그곳에서 분자≠0 → 극한 없음",
+        "ok": true
+      },
+      {
+        "claim": "-2<k<6 인 정수 7개 (-1,0,1,2,3,4,5)",
+        "ok": true
+      },
+      {
+        "claim": "정수 k 의 개수 = 8 (④)",
+        "ok": true
+      }
+    ]
+  }
+}

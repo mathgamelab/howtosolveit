@@ -1,0 +1,157 @@
+{
+  "id": "2025_6월모평_공통_7",
+  "source": { "exam": "2025_6월모평", "number": 7, "section": "공통", "score": 3, "answer": "④", "unit": "수학II-미분" },
+  "statement": "$x$에 대한 방정식 $x^3-3x^2-9x+k=0$의 서로 다른 실근의 개수가 2가 되도록 하는 모든 실수 $k$의 값의 합은? [3점]\n① 13 ② 16 ③ 19 ④ 22 ⑤ 25",
+
+  "understand": {
+    "given": [
+      "방정식 $x^3-3x^2-9x+k=0$ (삼차, $k$는 실수 상수)",
+      "'서로 다른' 실근의 개수가 2 — 중근은 한 번만 센다"
+    ],
+    "unknown": "조건을 만족시키는 모든 실수 $k$의 값의 합",
+    "condition": "서로 다른 실근의 개수가 정확히 2",
+    "restate": "$f_k(x)=x^3-3x^2-9x+k$의 그래프가 $x$축과 '서로 다른 두 점'에서 만나게 하는 $k$를 모두 찾아 더한다. $k$는 $y=x^3-3x^2-9x$의 그래프를 위아래로 평행이동시키는 손잡이다."
+  },
+
+  "analysis": [
+    {
+      "id": "q0",
+      "question": "모든 $k$의 값의 합을 알려면 무엇을 알아야 하나?",
+      "needs": ["q1"],
+      "heuristic": "work-backward",
+      "note": "'합'을 묻는다는 것은 그런 $k$가 유한 개(아마 두세 개)라는 뜻. 먼저 '어떤 $k$들인가'를 알아야 한다."
+    },
+    {
+      "id": "q1",
+      "question": "서로 다른 실근의 개수가 2가 되는 $k$는 어떤 값들이고, 몇 개나 있나?",
+      "needs": ["q2", "q4"],
+      "heuristic": "vary-parameter",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "슬라이더로 $k$를 $-40$에서 $40$까지 올리면 $x$축과 만나는 점의 개수가 어떤 순서로 바뀔지 먼저 적어 보세요 (예: 1 → 3 → 1). 개수가 정확히 2가 되는 $k$는 몇 개일 것 같나요?",
+          "accept": { "count_sequence": [1, 2, 3, 2, 1], "k_count_with_two_roots": 2 }
+        },
+        "action": "슬라이더 $k$를 천천히 움직이며 그래프와 $x$축의 교점 개수(라벨)를 관찰하세요. 개수가 바뀌는 '순간'에서 멈추고, 그때 그래프가 $x$축과 어떻게 만나는지 보세요. 그런 순간을 모두 찾으세요.",
+        "checkpoint": {
+          "type": "count-equals",
+          "object": "roots",
+          "value": 2,
+          "distinct": true,
+          "required_hits": 2,
+          "hint_after_seconds": 90,
+          "hint": "개수가 3에서 1로 '건너뛰지' 않고 2를 거치는 순간이 있습니다. 봉우리나 골짜기 근처에서 한 칸씩 움직여 보세요."
+        },
+        "noticing": "교점 개수는 1 → 2 → 3 → 2 → 1 로 변하고, 2가 되는 순간은 그래프의 봉우리(극대) 또는 골짜기(극소)가 $x$축에 '닿을(접할)' 때뿐이다. 그 순간은 정확히 두 번 있다. 따라서 구하는 $k$는 두 개이고, 각각 '극댓값 $+k=0$', '극솟값 $+k=0$'이 되는 값이다."
+      }
+    },
+    {
+      "id": "q2",
+      "question": "'실근의 개수'는 그래프에서 무엇으로 보이고, $k$는 그래프를 어떻게 바꾸나?",
+      "needs": ["q3"],
+      "heuristic": "draw-figure | restate",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "$k$를 $0$에서 $10$으로 바꾸면 그래프는 어떻게 변할까요? (모양이 바뀐다 / 위로 올라간다 / 아래로 내려간다 / 옆으로 움직인다)",
+          "accept": { "transform": "shift-up", "amount": 10 }
+        },
+        "action": "슬라이더 $k$를 $0$에서 $10$까지 움직여 예측과 비교하세요. 그래프 위의 점 $(0, k)$ 라벨이 어떻게 움직이는지 보세요.",
+        "checkpoint": { "type": "slider-in-range", "object": "k", "range": [9, 11] },
+        "noticing": "실근 = 그래프와 $x$축의 교점의 $x$좌표. $k$는 모양을 바꾸지 않고 그래프 전체를 $k$만큼 위아래로 평행이동시킬 뿐이다. 그러니 '어떤 $k$에서 교점이 2개인가'는 '그래프를 얼마나 올리고 내려야 $x$축에 딱 닿는가'와 같은 질문이다."
+      }
+    },
+    {
+      "id": "q3",
+      "question": "$k=0$일 때, 즉 $y=x^3-3x^2-9x$의 그래프는 어떤 개형인가?",
+      "needs": [],
+      "heuristic": "draw-figure",
+      "discover": {
+        "scene": "s1",
+        "predict": {
+          "prompt": "곡선을 보기 전에 $y=x^3-3x^2-9x$의 개형을 손으로 그려 보세요. (1) 극값은 몇 개? (2) $x\\to-\\infty$, $x\\to+\\infty$일 때 각각 어느 쪽으로 가나? (3) 원점을 지나나? (4) 원점 근처에서 증가인가 감소인가? 도함수 $y'=3x^2-6x-9$의 부호로 확인해 보세요.",
+          "accept": { "extrema_count": 2, "end_behavior": "-+", "passes_origin": true, "monotone_at_0": "decreasing" }
+        },
+        "action": "스케치를 제출하면 실제 곡선이 열립니다. 예측과 다른 부분(극값 위치, 증감)을 확인하세요.",
+        "checkpoint": { "type": "sketch-matches", "object": "curve_f", "tolerance": "qualitative" },
+        "noticing": "삼차항 계수가 양수이고 $y'=3(x+1)(x-3)$이 서로 다른 두 실근을 가지므로 극값이 2개인 'N자' 개형. 봉우리는 $x=-1$ 왼쪽, 골짜기는 $x=3$ 오른쪽에 있고 원점에서는 감소 중이다."
+      }
+    },
+    {
+      "id": "q4",
+      "question": "봉우리·골짜기가 $x$축에 닿는 순간의 $k$는 정확히 얼마인가?",
+      "needs": ["q5"],
+      "heuristic": "compute",
+      "note": "슬라이더 눈금을 읽지 말고 계산으로 구한다. 봉우리가 닿는다 ⇔ (극댓값) $+k=0$, 골짜기가 닿는다 ⇔ (극솟값) $+k=0$.",
+      "verified": { "k": ["-5", "27"] }
+    },
+    {
+      "id": "q5",
+      "question": "$y=x^3-3x^2-9x$의 극댓값과 극솟값은 얼마인가?",
+      "needs": [],
+      "heuristic": "compute",
+      "verified": { "critical_x": ["-1", "3"], "local_max": "5", "local_min": "-27" }
+    }
+  ],
+
+  "synthesis": [
+    "$f(x)=x^3-3x^2-9x+k$라 하면 $f'(x)=3x^2-6x-9=3(x+1)(x-3)$.",
+    "$x=-1$에서 극댓값 $f(-1)=5+k$, $x=3$에서 극솟값 $f(3)=-27+k$.",
+    "삼차방정식 $f(x)=0$의 서로 다른 실근이 2개 ⇔ 극댓값 또는 극솟값이 $0$ (그래프가 $x$축에 접함).",
+    "$5+k=0$에서 $k=-5$ (이때 $f(x)=(x+1)^2(x-5)$, 근 $-1, 5$), $-27+k=0$에서 $k=27$ (이때 $f(x)=(x-3)^2(x+3)$, 근 $3, -3$).",
+    "따라서 모든 $k$의 값의 합은 $-5+27=22$. 답 ④."
+  ],
+
+  "scenes": {
+    "s1": {
+      "view": [-4, 40, 6, -45],
+      "aspect": "free",
+      "axes": { "x": { "ticks": 1 }, "y": { "ticks": 5 } },
+      "objects": [
+        { "id": "k", "type": "slider", "range": [-40, 40], "step": 1, "init": 0,
+          "label": "k", "readout": "hidden-until-computed",
+          "note": "step 1 이어야 k=-5, 27 이 정확히 격자점에 놓여 count-equals 2 가 도달 가능하다. 눈금값은 q4를 계산으로 답한 뒤에만 표시한다(답 누수 방지)." },
+        { "id": "curve_f", "type": "function", "expr": "x^3-3x^2-9x+k",
+          "reveal": "after-predict", "predict-ref": "q3",
+          "label": "y = x³ − 3x² − 9x + k" },
+        { "id": "roots", "type": "intersections", "of": ["curve_f", "@x-axis"],
+          "note": "'@x-axis' 는 좌표축 참조. 스키마에 축 객체 타입이 없어 임시 표기 — 축을 expr '0' 인 function 으로 넣으면 predict 규칙에 걸린다.",
+          "count-label": true, "distinct": true, "merge-tolerance": 1e-6,
+          "label-format": "x축과 만나는 점: {n}개" },
+        { "id": "p_yint", "type": "point-on-curve", "curve": "curve_f", "x": 0,
+          "label": "(0, k)", "show-after": "q3" }
+      ]
+    }
+  },
+
+  "verification": {
+    "tool": "sympy",
+    "script": "verify_2025_6월모평_7.py",
+    "claims": [
+      { "claim": "g'(x) = 3(x+1)(x-3)", "ok": true },
+      { "claim": "임계점 x = -1, 3", "ok": true },
+      { "claim": "극값 개수 2", "ok": true },
+      { "claim": "양 끝 거동 -∞→-∞, +∞→+∞ (end_behavior '-+')", "ok": true },
+      { "claim": "x=0 에서 감소 (g'(0) = -9 < 0)", "ok": true },
+      { "claim": "원점을 지남 g(0)=0", "ok": true },
+      { "claim": "g 의 x절편 0, (3±3√5)/2 → k=0 일 때 실근 3개", "ok": true },
+      { "claim": "x=-1 은 극대 (g''(-1) < 0)", "ok": true },
+      { "claim": "x=3 은 극소 (g''(3) > 0)", "ok": true },
+      { "claim": "극댓값 g(-1) = 5", "ok": true },
+      { "claim": "극솟값 g(3) = -27", "ok": true },
+      { "claim": "판별식=0 인 k 는 -5, 27 두 개뿐", "ok": true },
+      { "claim": "k=-5 ⇔ 극댓값이 x축에 닿음 (5 + k = 0)", "ok": true },
+      { "claim": "k=27 ⇔ 극솟값이 x축에 닿음 (-27 + k = 0)", "ok": true },
+      { "claim": "k=-5: f(x) = (x+1)^2 (x-5)", "ok": true },
+      { "claim": "k=27: f(x) = (x-3)^2 (x+3)", "ok": true },
+      { "claim": "k=-5 일 때 서로 다른 실근 개수 2 ({-1, 5})", "ok": true },
+      { "claim": "k=27 일 때 서로 다른 실근 개수 2 ({-3, 3})", "ok": true },
+      { "claim": "k = -40, -5, 0, 10, 27, 40 에서 개수 = 1,2,3,2,1 순서 (3→2→1 전이는 접할 때만)", "ok": true },
+      { "claim": "-5 < k < 27 이면 3개, k < -5 또는 k > 27 이면 1개", "ok": true },
+      { "claim": "모든 k 의 합 = 22", "ok": true },
+      { "claim": "정답 ④ (22)", "ok": true },
+      { "claim": "슬라이더 range [-40, 40], step 1 로 k=-5, 27 이 격자점 위에 있음", "ok": true },
+      { "claim": "view [-4, 40, 6, -45] 안에 두 극점 (-1,5), (3,-27) 과 x절편 -3, -1, 3, 5 가 들어감", "ok": true }
+    ]
+  }
+}

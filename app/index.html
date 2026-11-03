@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발견 해설</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.8.0/jsxgraph.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">발견 해설 <span class="sub">폴리아 분석법 · 프로토타입</span></div>
+  <div class="src"><span id="src"></span> <select id="pick" aria-label="문항 고르기"></select></div>
+</header>
+
+<nav class="polya" id="polya">
+  <div class="stage" data-stage="understand"><b>1</b> 이해</div>
+  <div class="stage" data-stage="plan"><b>2</b> 계획 <small>분석법·발견</small></div>
+  <div class="stage" data-stage="carry-out"><b>3</b> 실행 <small>종합법</small></div>
+  <div class="stage off" data-stage="look-back" title="다음 버전에서 다룹니다"><b>4</b> 반성</div>
+</nav>
+
+<main class="layout">
+  <section class="left">
+    <div class="problem" id="problem"></div>
+    <details class="map" open>
+      <summary>거꾸로 묻기 지도 <small>구하는 것에서 출발</small></summary>
+      <ol id="tree"></ol>
+    </details>
+    <div class="card" id="card"></div>
+    <div class="history" id="history"></div>
+  </section>
+
+  <section class="right">
+    <div class="board-wrap">
+      <div id="board" class="jxgbox"></div>
+      <canvas id="sketch"></canvas>
+      <div class="veil" id="veil">아직 아무것도 그려지지 않았어요.<br>예측이 먼저예요.</div>
+      <div class="badge" id="countBadge" hidden></div>
+    </div>
+    <div id="sliders"></div>
+    <p class="tip" id="boardTip"></p>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.8.0/jsxgraphcore.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script src="graphs.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

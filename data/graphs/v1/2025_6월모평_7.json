@@ -1,0 +1,178 @@
+{
+  "schema": "discovery-graph/v1",
+  "id": "2025_6월모평_공통_7",
+  "source": {
+    "exam": "2025_6월모평", "examLabel": "2025학년도 6월 모의평가", "number": 7, "section": "공통",
+    "score": 3, "answer": "④", "unit": "수학II-미분",
+    "choices": ["13", "16", "19", "22", "25"]
+  },
+  "statement": "$x$에 대한 방정식 $x^3-3x^2-9x+k=0$의 서로 다른 실근의 개수가 $2$가 되도록 하는 모든 실수 $k$의 값의 합은? [3점]",
+
+  "understand": {
+    "unknown": "조건을 만족시키는 모든 실수 $k$의 값의 합",
+    "unknown_hint": "'모든 $k$의 값의 **합**'을 묻는다는 건, 그런 $k$가 무한히 많지 않고 몇 개뿐이라는 뜻이에요.",
+    "data": ["방정식 $x^3-3x^2-9x+k=0$ ($k$는 실수)"],
+    "conditions": [
+      {
+        "id": "c1",
+        "text": "서로 다른 실근의 개수가 $2$",
+        "digest": "실근은 그래프 $y=x^3-3x^2-9x+k$가 $x$축과 만나는 점의 $x$좌표예요. 그러니 조건은 '그래프가 $x$축과 **서로 다른 두 점**에서 만난다'는 뜻이고, 한 점에서 닿기만 하는(중근) 경우도 한 번만 세요.",
+        "deferred": false
+      }
+    ]
+  },
+
+  "analysis": [
+    { "id": "q0", "ask": "모든 $k$의 값의 합을 알려면 무엇을 알아야 하나?", "needs": ["q1"], "heuristic": "work-backward" },
+    { "id": "q1", "ask": "실근이 2개가 되는 $k$는 어떤 값들이고, 몇 개인가?", "needs": ["q2", "q3", "q4"], "heuristic": "vary-parameter" },
+    { "id": "q2", "ask": "$k=0$일 때 그래프는 어떤 개형인가?", "needs": [], "heuristic": "draw-figure" },
+    { "id": "q3", "ask": "$k$를 바꾸면 그래프는 어떻게 변하나?", "needs": [], "heuristic": "vary-parameter" },
+    { "id": "q4", "ask": "봉우리·골짜기의 높이는 정확히 얼마인가?", "needs": [], "heuristic": "compute" }
+  ],
+
+  "path": [
+    {
+      "id": "u_unknown", "kind": "ask", "polya": "understand", "answers": "q0",
+      "prompt": "먼저 **구하는 것**을 보세요. 문제는 '모든 실수 $k$의 값의 **합**'을 묻고 있어요. 이게 무엇을 암시할까요?",
+      "reveal_text": "$UNDERSTAND.unknown_hint"
+    },
+    {
+      "id": "u_digest", "kind": "digest", "polya": "understand", "condition": "c1",
+      "prompt": "조건 '서로 다른 실근의 개수가 2'를 **그래프의 말**로 바꿔 써 보세요."
+    },
+    {
+      "id": "p_back", "kind": "ask", "polya": "plan", "answers": "q1",
+      "prompt": "거꾸로 생각해 봅시다. 합을 구하려면 그런 $k$가 **어떤 값들인지** 알아야 하고, 그러려면 $k$가 그래프에 **무슨 일을 하는지** 알아야 해요. 그 전에 — $k=0$일 때의 그래프부터 머릿속에 그려 봅시다."
+    },
+    {
+      "id": "p_shape", "kind": "predict", "polya": "plan", "answers": "q2", "scene": "s1",
+      "prompt": "곡선을 **보기 전에**, $y=x^3-3x^2-9x$의 개형을 캔버스에 손으로 그려 보세요. (도함수 $y'=3x^2-6x-9$의 부호를 떠올리면 도움이 돼요.)",
+      "predict": {
+        "kind": "shape", "grade": "hard", "max_attempts": 2,
+        "accept": { "turning_points": 2, "ends": ["down", "up"] },
+        "soft_checks": { "slope_sign_at": { "0": "-" } },
+        "on_fail": [
+          "봉우리·골짜기(극값)는 몇 개일까요? $y'=0$의 실근 개수를 세어 보세요.",
+          "최고차항 $x^3$의 계수가 양수예요. $x$가 아주 크면 $y$는? 아주 작으면?"
+        ]
+      },
+      "hints": [{ "after": "seconds:120", "text": "$y'=3(x+1)(x-3)$이에요. $x=-1$과 $x=3$ 사이에서 $y'$의 부호는?" }]
+    },
+    {
+      "id": "n_shape", "kind": "notice", "polya": "plan", "scene": "s1",
+      "prompt": "실제 곡선이 열렸어요. 내 스케치와 비교해 **같은 점·다른 점**을 한 줄로 적어 보세요.",
+      "model": "극값이 두 개인 'N자' 개형이에요. 봉우리는 $x=-1$, 골짜기는 $x=3$에 있고, 원점에서는 내려가는 중이에요."
+    },
+    {
+      "id": "p_shift", "kind": "predict", "polya": "plan", "answers": "q3",
+      "prompt": "$k$를 $0$에서 **더 크게** 바꾸면 그래프는 어떻게 될까요?",
+      "predict": {
+        "kind": "choice", "grade": "soft",
+        "options": ["모양이 바뀐다", "통째로 위로 올라간다", "통째로 아래로 내려간다", "옆으로 움직인다"],
+        "correct": "통째로 위로 올라간다"
+      }
+    },
+    {
+      "id": "e_shift", "kind": "explore", "polya": "plan", "answers": "q3", "scene": "s1",
+      "prompt": "슬라이더 $k$를 오른쪽·왼쪽으로 움직여 보세요. (눈금은 일부러 가려 두었어요.)",
+      "checkpoint": { "all": [
+        { "type": "visited-range", "slider": "k", "range": [12, 40] },
+        { "type": "visited-range", "slider": "k", "range": [-40, -12] }
+      ]}
+    },
+    {
+      "id": "n_shift", "kind": "notice", "polya": "plan", "scene": "s1",
+      "prompt": "$k$는 그래프에 무슨 일을 하나요?",
+      "model": "$k$는 모양은 그대로 두고 그래프 전체를 위아래로 **평행이동**시켜요. 그러니 '실근이 2개인 $k$'는 '그래프를 얼마나 올리거나 내려야 $x$축과 두 점에서 만나는가'라는 질문이 돼요."
+    },
+    {
+      "id": "p_count", "kind": "predict", "polya": "plan", "answers": "q1",
+      "prompt": "$k$를 아주 작은 값에서 아주 큰 값까지 천천히 올리면, $x$축과 만나는 점의 개수는 어떤 순서로 바뀔까요? (예: 1, 3, 1)",
+      "predict": { "kind": "sequence", "grade": "soft", "accept": { "values": [1, 2, 3, 2, 1] } }
+    },
+    {
+      "id": "e_count", "kind": "explore", "polya": "plan", "answers": "q1", "scene": "s1", "role": "decisive",
+      "prompt": "이제 $x$축과 만나는 점의 개수가 화면에 표시돼요. 슬라이더를 천천히 움직이며 **개수가 정확히 2가 되는 순간**을 모두 찾아 보세요.",
+      "checkpoint": { "type": "count-equals", "of": "roots", "value": 2, "times": 2 },
+      "hints": [
+        { "after": "seconds:60", "text": "개수가 3에서 1로 '건너뛰는' 것처럼 보이나요? 그 사이에서 한 칸씩 움직여 보세요." },
+        { "after": "seconds:120", "text": "봉우리나 골짜기가 $x$축에 가까워질 때를 잘 보세요." }
+      ]
+    },
+    {
+      "id": "n_count", "kind": "notice", "polya": "plan", "scene": "s1", "role": "decisive",
+      "prompt": "개수가 2가 되는 순간, 그래프와 $x$축은 **어떻게** 만나고 있었나요? 그런 순간은 몇 번 있었나요?",
+      "model": "개수가 2가 되는 순간은 **봉우리 또는 골짜기가 $x$축에 딱 닿을(접할) 때**뿐이고, 그런 순간은 정확히 두 번이에요. 그러니 구하는 $k$는 두 개: '봉우리 높이 $+k=0$'과 '골짜기 높이 $+k=0$'인 $k$예요."
+    },
+    {
+      "id": "c_ext", "kind": "compute", "polya": "carry-out", "answers": "q4",
+      "prompt": "$y=x^3-3x^2-9x$의 **극댓값**과 **극솟값**을 계산해 보세요.",
+      "input": { "fields": [
+        { "label": "극댓값", "accept": "$verified.local_max" },
+        { "label": "극솟값", "accept": "$verified.local_min" }
+      ]},
+      "hints": [
+        { "after": "attempts:1", "text": "$y'=3(x+1)(x-3)=0$에서 $x=-1$, $x=3$이에요." },
+        { "after": "attempts:2", "text": "$x=-1$과 $x=3$을 원래 식에 대입하세요." }
+      ]
+    },
+    {
+      "id": "c_k", "kind": "compute", "polya": "carry-out", "answers": "q1",
+      "prompt": "봉우리가 $x$축에 닿으려면 그래프를 얼마나 내려야 하나요? 골짜기는 얼마나 올려야 하나요? 그때의 $k$를 각각 구하세요.",
+      "input": { "fields": [
+        { "label": "봉우리가 닿는 $k$", "accept": "$verified.k_max_touch" },
+        { "label": "골짜기가 닿는 $k$", "accept": "$verified.k_min_touch" }
+      ]},
+      "on_success": "이제 슬라이더 눈금을 열어 줄게요. 직접 그 값에 맞춰 확인해 보세요."
+    },
+    {
+      "id": "c_ans", "kind": "compute", "polya": "carry-out", "answers": "q0",
+      "prompt": "모든 $k$의 값의 합은?",
+      "input": { "fields": [{ "label": "합", "accept": "$verified.answer_value" }] }
+    },
+    { "id": "syn", "kind": "synthesis", "polya": "carry-out" }
+  ],
+
+  "scenes": {
+    "s1": {
+      "view": { "x": [-5, 7], "y": [-45, 40], "aspect": "free" },
+      "axes": { "x": { "name": "x", "ticks": 1 }, "y": { "name": "y", "ticks": 10, "labels": false } },
+      "objects": [
+        { "id": "k", "type": "slider", "label": "k", "range": [-40, 40], "step": 1, "init": 0,
+          "readout": "hidden", "readout_reveal": "after:c_k", "reveal": "after:p_shift" },
+        { "id": "curve_f", "type": "function", "expr": "x^3-3*x^2-9*x+k",
+          "label": "y = x³ − 3x² − 9x + k", "reveal": "after:p_shape" },
+        { "id": "yint", "type": "point-on-curve", "curve": "curve_f", "x": 0,
+          "label": "y절편", "reveal": "after:p_shift", "role": "guide" },
+        { "id": "roots", "type": "intersections", "of": ["curve_f", "@x-axis"],
+          "distinct": true, "merge_tol": 1e-6, "count_label": "x축과 만나는 점: {n}개",
+          "reveal": "after:p_count" }
+      ]
+    }
+  },
+
+  "synthesis": [
+    "$f(x)=x^3-3x^2-9x+k$라 하면 $f'(x)=3x^2-6x-9=3(x+1)(x-3)$.",
+    "$x=-1$에서 극댓값 $f(-1)=5+k$, $x=3$에서 극솟값 $f(3)=-27+k$.",
+    "삼차방정식의 서로 다른 실근이 2개 ⇔ 극댓값 또는 극솟값이 $0$ (그래프가 $x$축에 접함).",
+    "$5+k=0$에서 $k=-5$, $-27+k=0$에서 $k=27$.",
+    "따라서 모든 $k$의 값의 합은 $-5+27=22$. 답 ④"
+  ],
+
+  "verified": {
+    "f": "x**3-3*x**2-9*x",
+    "critical_x": ["-1", "3"],
+    "local_max": "5",
+    "local_min": "-27",
+    "k_max_touch": "-5",
+    "k_min_touch": "27",
+    "k_values": ["-5", "27"],
+    "count_sequence": [1, 2, 3, 2, 1],
+    "answer_value": "22",
+    "answer_choice": "④"
+  },
+
+  "short": "s01_2025_6월모평_7.mp4",
+
+  "leak_guard": { "choice_gap": 3 }
+}

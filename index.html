@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발견 해설</title>
+<meta name="description" content="폴리아의 분석법으로, 학생이 직접 발견하며 푸는 인터랙티브 수학 해설">
+<style>
+  :root {
+    --bg: #f7f5f0; --panel: #ffffff; --ink: #1f2328; --muted: #6b7078; --line: #e4e0d6;
+    --accent: #2f6fde; --accent-soft: #e8f0fd; --warm: #d9822b; --warm-soft: #fbefe2;
+    --good: #1f8a5b; --good-soft: #e3f4ec;
+    font-family: "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12151a; --panel: #1b1f26; --ink: #e8eaed; --muted: #9aa4ae; --line: #2c323b;
+      --accent: #6ea1ff; --accent-soft: #1d2a40; --warm: #ffa94d; --warm-soft: #3a2a17;
+      --good: #51cf66; --good-soft: #17301f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.65; }
+  main { max-width: 980px; margin: 0 auto; padding: 48px 20px 64px; }
+  a { color: var(--accent); }
+
+  .hero h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin: 0 0 6px; letter-spacing: -0.02em; }
+  .hero .sub { color: var(--muted); font-size: 1.05rem; margin: 0 0 22px; }
+  .hero p { max-width: 640px; margin: 0 0 12px; }
+  .hero .cta { display: inline-block; margin-top: 10px; background: var(--accent); color: #fff; text-decoration: none;
+    font-weight: 700; padding: 10px 18px; border-radius: 10px; }
+
+  h2 { font-size: 1.25rem; margin: 48px 0 14px; }
+  .stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .stage { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .stage b { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-size: .8rem; margin-right: 6px; }
+  .stage h3 { margin: 0 0 6px; font-size: 1rem; }
+  .stage p { margin: 0; font-size: .9rem; color: var(--muted); }
+  .stage.off { opacity: .5; }
+
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .rule { background: var(--warm-soft); border-radius: 12px; padding: 14px; font-size: .92rem; }
+  .rule strong { display: block; margin-bottom: 4px; }
+
+  .problems { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+    display: flex; flex-direction: column; gap: 8px; }
+  .card .meta { font-size: .8rem; color: var(--muted); }
+  .card h3 { margin: 0; font-size: 1.05rem; }
+  .card p { margin: 0; font-size: .9rem; flex: 1; }
+  .card .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: .72rem; padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  .tag.short { background: var(--good-soft); color: var(--good); }
+  .card a.go { font-weight: 700; text-decoration: none; }
+
+  .shorts { display: flex; gap: 16px; flex-wrap: wrap; }
+  .shorts figure { margin: 0; width: 220px; }
+  .shorts video { width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; background: #101418; display: block; }
+  .shorts figcaption { font-size: .85rem; color: var(--muted); margin-top: 6px; }
+
+  ul.docs { padding-left: 18px; }
+  footer { margin-top: 56px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+
+  @media (max-width: 760px) {
+    main { padding: 32px 16px 48px; }
+    .stages, .rules, .problems { grid-template-columns: 1fr; }
+    .shorts figure { width: calc(50% - 8px); }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>발견 해설</h1>
+    <p class="sub">폴리아의 분석법으로, 직접 발견하며 푸는 인터랙티브 수학 해설</p>
+    <p>해설지의 풀이는 대개 <b>종합법</b>이에요. 조건에서 출발해 답까지 한 줄로 내려가죠. 깔끔하지만, 그 풀이를 처음 <b>어떻게 떠올렸는지</b>는 보이지 않아요.</p>
+    <p>실제 문제 해결은 <b>발견</b>에서 시작해요. 구하는 것에서 거꾸로 묻고, 손으로 그려 보고, 값을 움직여 보다가 “아, 이 순간이구나” 하고 알아차리는 과정이에요. 이 프로젝트는 종이 위에서 하던 그 발견을 손으로 조작하며 거치게 해요.</p>
+    <a class="cta" href="app/dist/발견해설.html">해설 앱 열기 →</a>
+  </section>
+
+  <h2>폴리아의 문제 해결 단계를 그대로</h2>
+  <div class="stages">
+    <div class="stage"><h3><b>1</b>이해</h3><p>구하는 것부터 보고, 조건을 하나씩 내 말로 바꿔 써요. 지금 못 쓰는 조건은 미뤄 둬요.</p></div>
+    <div class="stage"><h3><b>2</b>계획 · 분석법</h3><p>거꾸로 물으며, 예측하고 조작해서 결정적인 순간을 스스로 찾아요.</p></div>
+    <div class="stage"><h3><b>3</b>실행 · 종합법</h3><p>발견이 정해 준 계산을 그제야 해요. 마지막에 정방향 풀이로 정리해요.</p></div>
+    <div class="stage off"><h3><b>4</b>반성</h3><p>다음 버전에서 다룰 예정이에요.</p></div>
+  </div>
+
+  <h2>‘딸깍’ 금지</h2>
+  <div class="rules">
+    <div class="rule"><strong>그래프는 그려야 열려요</strong>곡선을 보기 전에 개형을 손으로 그려요. 앱이 극값 개수와 양 끝 방향을 읽어 판정해요.</div>
+    <div class="rule"><strong>조작 전에 예측</strong>슬라이더를 움직이기 전에 결과를 먼저 걸어 두어요. 그래야 바뀌는 순간이 ‘사건’이 돼요.</div>
+    <div class="rule"><strong>본 것을 먼저 쓰기</strong>조작한 뒤에는 알아차린 것을 내 말로 쓰고 나서야 모범 문장을 봐요. 답이 될 눈금은 계산 뒤에 열려요.</div>
+  </div>
+
+  <h2>문항</h2>
+  <div class="problems">
+    <article class="card">
+      <span class="meta">2025학년도 6월 모의평가 · 공통 7번 · 3점</span>
+      <h3>실근이 2개가 되는 k</h3>
+      <p>k를 움직이면 그래프가 위아래로 움직여요. 실근이 2개가 되는 순간은 봉우리나 골짜기가 x축에 닿을 때뿐이에요.</p>
+      <div class="tags"><span class="tag">수평선 쓸기</span><span class="tag short">쇼츠</span></div>
+      <a class="go" href="app/dist/발견해설.html#2025_6월모평_공통_7">풀어 보기 →</a>
+    </article>
+    <article class="card">
+      <span class="meta">2026학년도 수능 · 공통 9번 · 4점</span>
+      <h3>수평선 y=5가 접할 때</h3>
+      <p>a를 움직이며 접하는 순간을 찾아요. 곡선은 늘 (0, 4)를 지나서, 5에 닿을 수 있는 건 봉우리뿐이에요.</p>
+      <div class="tags"><span class="tag">접함 = 극값</span><span class="tag">자취</span></div>
+      <a class="go" href="app/dist/발견해설.html#2026_수능_공통_9">풀어 보기 →</a>
+    </article>
+    <article class="card">
+      <span class="meta">2025학년도 10월 고1 학력평가 · 30번 · 4점</span>
+      <h3>범위의 양 끝에 숨은 두 식</h3>
+      <p>미지수는 셋인데 등식은 하나뿐이에요. h를 그리고 y=t를 내려 보면, 범위의 양 끝이 나머지 두 식이에요.</p>
+      <div class="tags"><span class="tag">위에 있는 것</span><span class="tag">대칭</span><span class="tag short">쇼츠</span></div>
+      <a class="go" href="app/dist/발견해설.html#2025_10월학평_고1_30">풀어 보기 →</a>
+    </article>
+  </div>
+
+  <h2>쇼츠</h2>
+  <p>앱에서 손으로 거친 발견을 1분짜리 세로 영상으로 다시 봐요. 영상은 <a href="https://www.manim.community/">Manim</a>으로 만들었어요. 앱에서는 풀이를 끝까지 마쳐야 영상이 열려요.</p>
+  <div class="shorts">
+    <figure><video controls playsinline preload="metadata" src="shorts/out/s01_2025_6월모평_7.mp4"></video>
+      <figcaption>2025 6월 모평 7번 · 51초</figcaption></figure>
+    <figure><video controls playsinline preload="metadata" src="shorts/out/s03_2025_10월학평_고1_30.mp4"></video>
+      <figcaption>2025 10월 고1 학평 30번 · 65초</figcaption></figure>
+  </div>
+
+  <h2>문서</h2>
+  <ul class="docs">
+    <li><a href="docs/schema-v1.md">발견 그래프 스키마 v1</a> — 문항 하나를 ‘질문 지도 + 학생의 길’로 적는 형식</li>
+    <li><a href="docs/selection.md">문항 선별</a> — 평가원 기출 133문항 중 조작이 발견을 돕는 30문항</li>
+    <li><a href="docs/pilot-findings.md">파일럿 결과</a> — 7문항을 시험 삼아 옮겨 보며 찾은 것</li>
+  </ul>
+
+  <footer>
+    문항의 저작권은 한국교육과정평가원과 출제 교육청에 있어요. 이 저장소에는 시험지 원본과 해설지를 넣지 않았어요.
+  </footer>
+</main>
+</body>
+</html>
