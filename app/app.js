@@ -526,7 +526,7 @@
       inputs.forEach(({ inp }) => { inp.disabled = true; });
       bar.remove();
       const d = document.createElement("div");
-      d.innerHTML = predCompare() + `<div class="hint">${revealed ? "정답을 보고 넘어가요.<br>" : ""}${md(s.model)}</div>`;
+      d.innerHTML = predCompare() + `<div class="hint">${revealed ? "정답을 보고 넘어가요.<br>" : ""}${md(textRef(s.model))}</div>`;
       body.appendChild(d); tex(d);
       const mine = inputs.map((it) => `${it.fd.label} ${fieldText(it)}`).join(", ");
       body.appendChild(row(btn("다음", "primary", () => complete(s.history || `<b>${KIND_LABEL[s.kind]}</b> — ${mine}`))));
