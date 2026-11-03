@@ -86,44 +86,28 @@ window.GRAPHS = {
     "kind": "ask",
     "polya": "understand",
     "answers": "q0",
-    "prompt": "먼저 **구하는 것** $m\\times(p-q)$를 보세요. 무엇을 알아야 하고, 그러려면 식이 몇 개 필요할까요? 문제에 주어진 등식은 몇 개인가요?",
-    "reveal_text": "$UNDERSTAND.unknown_hint",
-    "history": "<b>구하는 것</b> — $p,q,m$ 셋 → 식 셋 필요. 등식은 $f(m)+g(m)=-4$ 하나뿐 → 상자 조건이 식 두 개를 숨기고 있다"
-   },
-   {
-    "id": "u_g",
-    "kind": "digest",
-    "polya": "understand",
-    "condition": "c1",
-    "prompt": "$g(x)=-f(x-m)$은 $f$의 그래프를 **어떻게 옮긴** 것인지 내 말로 써 보세요."
-   },
-   {
-    "id": "u_h",
-    "kind": "digest",
-    "polya": "understand",
-    "condition": "c2",
-    "prompt": "$h(x)$는 어떤 함수인지 내 말로 써 보세요."
-   },
-   {
-    "id": "u_box",
-    "kind": "digest",
-    "polya": "understand",
-    "condition": "c3",
-    "prompt": "상자 속 조건을 지금 바로 식으로 바꿀 수 있나요? 해 보고, 막히는 곳을 적어 보세요."
-   },
-   {
-    "id": "p_back",
-    "kind": "ask",
-    "polya": "plan",
-    "answers": "q1",
-    "prompt": "그림부터 그려 봅시다. $p,q$는 아직 모르니, **일단 $p=2$, $q=-4$로 두고** 구조를 먼저 관찰할게요. (특수한 경우에서 본 구조는 일반적인 경우에도 그대로예요.) $m$은 손잡이로 남겨 둡니다."
+    "prompt": "구하는 것은 $m\\times(p-q)$예요. 세어 보세요.",
+    "input": {
+     "fields": [
+      {
+       "label": "알아내야 할 미지수의 개수",
+       "accept": "3"
+      },
+      {
+       "label": "문제에 등식으로 주어진 조건의 개수",
+       "accept": "1"
+      }
+     ]
+    },
+    "model": "미지수가 **셋**이면 식도 **셋** 필요한데, 등식은 $f(m)+g(m)=-4$ 하나뿐이에요. 그러니 상자 속 범위 $g(p)<t<5$의 **양 끝**이 나머지 두 식을 숨기고 있을 거예요. 상자는 그림을 그린 뒤에 읽어요.",
+    "history": "<b>구하는 것</b> — 미지수 3개, 등식 1개 → 상자 범위의 양 끝이 나머지 두 식"
    },
    {
     "id": "p_g",
     "kind": "predict",
     "polya": "plan",
     "answers": "q2",
-    "prompt": "$y=f(x)$는 꼭짓점이 $(p,q)$인 아래로 볼록(∪) 포물선이에요. 그렇다면 $y=g(x)$는?",
+    "prompt": "그림부터 그려요. $p,q$는 아직 모르니 **일단 $p=2$, $q=-4$로** 두고 구조를 볼게요. $f$는 꼭짓점이 $(p,q)$인 ∪ 모양이에요. $g(x)=-f(x-m)$은 어떤 모양일까요?",
     "predict": {
      "kind": "choice",
      "grade": "soft",
@@ -134,43 +118,8 @@ window.GRAPHS = {
       "꼭짓점 $(p-m,\\,q)$인 ∪ 모양"
      ],
      "correct": "꼭짓점 $(p+m,\\,-q)$인 ∩ 모양"
-    }
-   },
-   {
-    "id": "e_m",
-    "kind": "explore",
-    "polya": "plan",
-    "answers": "q2",
-    "scene": "s1",
-    "prompt": "$f$(회색)와 $g$(주황)가 열렸어요. 슬라이더 $m$을 크게·작게 움직여 보세요. 두 그래프가 만나는 점 $\\alpha,\\beta$는 어떻게 움직이나요?",
-    "checkpoint": {
-     "all": [
-      {
-       "type": "visited-range",
-       "slider": "m",
-       "range": [
-        0.5,
-        1.2
-       ]
-      },
-      {
-       "type": "visited-range",
-       "slider": "m",
-       "range": [
-        3.2,
-        4
-       ]
-      }
-     ]
-    }
-   },
-   {
-    "id": "n_m",
-    "kind": "notice",
-    "polya": "plan",
-    "scene": "s1",
-    "prompt": "$m$을 움직이며 본 것을 한 줄로 적어 보세요.",
-    "model": "$g$는 $f$를 오른쪽으로 $m$만큼 옮겨 **뒤집은 ∩**이에요. 두 그래프는 늘 두 점 $\\alpha,\\beta$에서 만나고, 그 사이에서는 $g$가 $f$보다 **위**에 있어요."
+    },
+    "explain": "$f(x-m)$은 오른쪽으로 $m$만큼 평행이동, 앞의 $-$는 $x$축에 대해 뒤집기예요."
    },
    {
     "id": "p_h",
@@ -178,7 +127,7 @@ window.GRAPHS = {
     "polya": "plan",
     "answers": "q2",
     "scene": "s1",
-    "prompt": "이제 $y=h(x)$의 개형을 캔버스에 **손으로** 그려 보세요. 바깥은 $f$, $\\alpha$와 $\\beta$ 사이는 $g$예요.",
+    "prompt": "$f$(회색)와 $g$(주황)가 열렸어요. 이제 $y=h(x)$를 캔버스에 **손으로** 그려 보세요. $\\alpha,\\beta$ 바깥은 $f$, 사이는 $g$예요.",
     "predict": {
      "kind": "shape",
      "grade": "hard",
@@ -192,7 +141,7 @@ window.GRAPHS = {
      },
      "on_fail": [
       "왼쪽 끝과 오른쪽 끝은 모두 $f$예요. $f$는 양 끝에서 어디로 가나요?",
-      "$\\alpha$에서 $g$로 갈아타면 올라갔다가 내려오고, $\\beta$에서 다시 $f$를 타고 올라가요. 꺾이는 곳이 몇 군데인가요?"
+      "$\\alpha$에서 $g$로 갈아타면 올라갔다가 내려오고, $\\beta$에서 다시 $f$를 타고 올라가요. 방향이 바뀌는 곳이 몇 군데인가요?"
      ]
     }
    },
@@ -201,15 +150,29 @@ window.GRAPHS = {
     "kind": "notice",
     "polya": "plan",
     "scene": "s1",
-    "prompt": "진한 파란 선이 $h$예요. 내 스케치와 비교해 보세요. $h$를 한 문장으로 말하면?",
-    "model": "$h$는 $f$와 $g$ 중 **위에 있는 것만 이은** 그래프예요. 왼쪽 골짜기($\\alpha$에서 꺾임) → 가운데 봉우리($g$의 꼭짓점) → 오른쪽 골짜기($\\beta$에서 꺾임). 오른쪽 골짜기가 왼쪽보다 높아요."
+    "prompt": "진한 파란 선이 $h$예요. $h$를 한마디로 하면?",
+    "input": {
+     "fields": [
+      {
+       "label": "$h$는",
+       "type": "select",
+       "options": [
+        "$f$와 $g$ 중 위에 있는 것",
+        "$f$와 $g$ 중 아래에 있는 것",
+        "$f$와 $g$의 평균"
+       ],
+       "accept": "$f$와 $g$ 중 위에 있는 것"
+      }
+     ]
+    },
+    "model": "$\\alpha,\\beta$ 사이에서는 $g$가 위, 바깥에서는 $f$가 위예요. 그래서 $h$는 **위에 있는 것만 이은** 그래프: 왼쪽 골짜기 → 가운데 봉우리 → 오른쪽 골짜기."
    },
    {
     "id": "p_count",
     "kind": "predict",
     "polya": "plan",
     "answers": "q3",
-    "prompt": "수평선 $y=t$를 위에서 아래로 내리면, $h(x)=t$의 서로 다른 실근은 **최대 몇 개**까지 생길까요?",
+    "prompt": "수평선 $y=t$를 위에서 아래로 내리면, $h(x)=t$의 서로 다른 실근은 **최대 몇 개**일까요?",
     "predict": {
      "kind": "count",
      "grade": "soft",
@@ -225,7 +188,7 @@ window.GRAPHS = {
     "answers": "q3",
     "scene": "s1",
     "role": "decisive",
-    "prompt": "슬라이더 $t$로 수평선을 위아래로 움직여 보세요. 실근의 개수와 함께, **합이 $4p+2m$과 같은지**가 표시돼요. 합이 $4p+2m$이 되는 $t$는 어디부터 어디까지인가요?",
+    "prompt": "슬라이더 $t$로 수평선을 위아래로 움직여 보세요. 실근 개수와 함께 **합이 $4p+2m$인지**가 표시돼요. ✓가 뜨는 구간을 찾아 보세요.",
     "checkpoint": {
      "all": [
       {
@@ -267,8 +230,36 @@ window.GRAPHS = {
     "polya": "plan",
     "scene": "s1",
     "role": "decisive",
-    "prompt": "합이 $4p+2m$이 되는 건 실근이 몇 개일 때였나요? 왜 하필 $4p+2m$일까요? 그 $t$ 구간의 위 끝과 아래 끝은 그래프의 어디였나요?",
-    "model": "실근이 **4개**일 때뿐이에요. 바깥 두 근은 $f$의 축 $x=p$에 대해, 가운데 두 근은 $g$의 축 $x=p+m$에 대해 **대칭**이라 합이 $2p+2(p+m)=4p+2m$. 그런 $t$는 **오른쪽 꺾인 점의 높이 $h(\\beta)$보다 크고, 봉우리 높이 $-q$보다 작을 때**예요."
+    "prompt": "본 것을 확인해 봐요.",
+    "input": {
+     "fields": [
+      {
+       "label": "합이 $4p+2m$일 때 실근의 개수",
+       "accept": "4"
+      },
+      {
+       "label": "그런 $t$ 구간의 **위 끝**",
+       "type": "select",
+       "options": [
+        "봉우리 높이 $-q$",
+        "오른쪽 꺾인 점의 높이 $h(\\beta)$",
+        "왼쪽 꺾인 점의 높이 $h(\\alpha)$"
+       ],
+       "accept": "봉우리 높이 $-q$"
+      },
+      {
+       "label": "그런 $t$ 구간의 **아래 끝**",
+       "type": "select",
+       "options": [
+        "봉우리 높이 $-q$",
+        "오른쪽 꺾인 점의 높이 $h(\\beta)$",
+        "왼쪽 꺾인 점의 높이 $h(\\alpha)$"
+       ],
+       "accept": "오른쪽 꺾인 점의 높이 $h(\\beta)$"
+      }
+     ]
+    },
+    "model": "바깥 두 근은 $f$의 축 $x=p$, 가운데 두 근은 $g$의 축 $x=p+m$에 대해 **대칭**이라 합이 $2p+2(p+m)=4p+2m$이에요. 그래서 범위는 $h(\\beta)<t<-q$."
    },
    {
     "id": "r_box",
@@ -276,9 +267,27 @@ window.GRAPHS = {
     "polya": "plan",
     "condition": "c3",
     "answers": "q1",
-    "prompt": "미뤄 둔 상자 조건을 꺼낼 때예요. 방금 찾은 범위 '$h(\\beta)<t<-q$'와 문제의 범위 '$g(p)<t<5$'를 맞대 보세요. 어떤 식 두 개가 나오나요?",
-    "reveal_text": "위 끝: 봉우리 높이 $-q=5$, 즉 $q=-5$.\n아래 끝: $h(\\beta)=g(\\beta)$가 $g(p)$와 같아야 해요. 즉 $g(\\beta)=g(p)$. 이건 아직 그림으로 더 봐야 해요.",
-    "history": "<b>미룬 조건 회수</b> — 위 끝 $-q=5$, 아래 끝 $g(\\beta)=g(p)$"
+    "prompt": "이제 상자를 읽을 차례예요. 찾은 범위 $h(\\beta)<t<-q$를 문제의 범위 $g(p)<t<5$와 맞대 보세요.",
+    "input": {
+     "fields": [
+      {
+       "label": "위 끝에서: $q=$",
+       "accept": "$verified.q"
+      },
+      {
+       "label": "아래 끝에서 나오는 식",
+       "type": "select",
+       "options": [
+        "$g(\\beta)=g(p)$",
+        "$g(\\alpha)=g(p)$",
+        "$f(\\beta)=f(p)$"
+       ],
+       "accept": "$g(\\beta)=g(p)$"
+      }
+     ]
+    },
+    "model": "두 번째 식은 $h(\\beta)=g(p)$, 즉 $g(\\beta)=g(p)$예요. ($\\beta$에서 $f$와 $g$의 값이 같아요.)",
+    "history": "<b>상자 조건</b> — $q=-5$, $g(\\beta)=g(p)$"
    },
    {
     "id": "p_beta",
@@ -304,7 +313,7 @@ window.GRAPHS = {
     "polya": "plan",
     "answers": "q1",
     "scene": "s1",
-    "prompt": "점 $(p,\\,g(p))$와 높이 $g(p)$인 점선이 열렸어요. 슬라이더 $m$을 움직여 **꺾인 점 $\\beta$가 점선 위에 딱 올라가는** 순간을 찾아 보세요.",
+    "prompt": "이제 $m$ 슬라이더가 열렸어요. $m$을 움직여 **꺾인 점 $\\beta$가 빨간 점선 위에 딱 올라가는** 순간을 찾아 보세요.",
     "checkpoint": {
      "type": "near",
      "expr": "0.5*(-m/2+Math.sqrt(8-m^2/4))^2-0.5*m^2",
@@ -322,30 +331,23 @@ window.GRAPHS = {
     "kind": "notice",
     "polya": "plan",
     "scene": "s1",
-    "prompt": "$\\beta$가 점선에 올라간 순간, $\\beta$와 $p$는 $g$의 축 $x=p+m$에 대해 어떤 위치였나요?",
-    "model": "$\\beta$는 $p$를 축 $x=p+m$에 대해 **뒤집은 자리**, 즉 $\\beta=p+2m$이에요. $\\beta$는 $f(x)=g(x)$의 근이니 이게 **두 번째 식**이 돼요."
-   },
-   {
-    "id": "c_q",
-    "kind": "compute",
-    "polya": "carry-out",
-    "answers": "q4",
-    "prompt": "이제야 계산이에요. 첫 번째 식(봉우리 높이 $=5$)에서 $q$는?",
+    "prompt": "점선에 올라간 순간, 세로 점선 $x=p$, $x=p+m$, $x=\\beta$의 간격을 보세요.",
     "input": {
      "fields": [
       {
-       "label": "$q$",
-       "accept": "$verified.q"
+       "label": "$\\beta$와 $p$ 사이의 거리는 $m$의 몇 배?",
+       "accept": "2"
       }
      ]
-    }
+    },
+    "model": "$\\beta$는 $p$를 축 $x=p+m$에 대해 뒤집은 자리, 즉 $\\beta=p+2m$이에요. $\\beta$는 $f(x)=g(x)$의 근이니 이게 **두 번째 식**이 돼요."
    },
    {
     "id": "c_m",
     "kind": "compute",
     "polya": "carry-out",
     "answers": "q4",
-    "prompt": "두 번째 식: $x=p+2m$이 $f(x)=g(x)$의 근이에요. 대입해서 $m$을 구하세요.",
+    "prompt": "이제야 계산이에요. $x=p+2m$을 $f(x)=g(x)$에 대입해 $m$을 구하세요.",
     "input": {
      "fields": [
       {
@@ -443,7 +445,7 @@ window.GRAPHS = {
       "step": 0.01,
       "init": 2,
       "readout": "numeric",
-      "reveal": "after:p_g"
+      "reveal": "after:p_beta"
      },
      {
       "id": "t",
@@ -496,14 +498,30 @@ window.GRAPHS = {
       "type": "vline",
       "x": "2",
       "label": "x=p",
-      "reveal": "after:n_t"
+      "reveal": {
+       "any": [
+        "after:n_t"
+       ]
+      }
      },
      {
       "id": "axis_pm",
       "type": "vline",
       "x": "2+m",
       "label": "x=p+m",
-      "reveal": "after:n_t"
+      "reveal": {
+       "any": [
+        "after:n_t"
+       ]
+      }
+     },
+     {
+      "id": "axis_beta",
+      "type": "vline",
+      "x": "2+m/2+Math.sqrt(8-m^2/4)",
+      "label": "x=β",
+      "color": "#2f6fde",
+      "reveal": "after:p_beta"
      },
      {
       "id": "line_gp",

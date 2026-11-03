@@ -438,9 +438,79 @@
   const btn = (label, cls, fn) => { const b = document.createElement("button"); b.textContent = label; b.className = cls || ""; b.onclick = fn; return b; };
   const row = (...els) => { const d = document.createElement("div"); d.className = "row"; els.forEach((e) => d.appendChild(e)); return d; };
 
+  // 입력칸: 숫자(기본) · 식(expr) · 고르기(select)
+  function makeFields(s, body) {
+    const wrap = document.createElement("div"); wrap.className = "fields";
+    const inputs = s.input.fields.map((fd) => {
+      const l = document.createElement("label"); l.innerHTML = md(fd.label);
+      let inp;
+      if (fd.type === "select") {
+        inp = document.createElement("select");
+        inp.innerHTML = `<option value="">고르기…</option>` + fd.options.map((o, n) => `<option value="${n}">${o}</option>`).join("");
+      } else {
+        inp = document.createElement("input"); inp.type = "text"; inp.inputMode = fd.type === "expr" ? "text" : "decimal";
+      }
+      l.appendChild(inp); wrap.appendChild(l); return { inp, fd, accept: verifiedRef(fd.accept) };
+    });
+    body.appendChild(wrap);
+    return inputs;
+  }
+  function fieldOk({ inp, fd, accept }) {
+    if (fd.type === "select") return inp.value !== "" && fd.options[Number(inp.value)] === accept;
+    if (fd.type === "expr") return sameExpr(inp.value, accept.replace(/\*\*/g, "^"), fd.var);
+    return Math.abs(parseNum(inp.value) - parseNum(accept)) < 1e-9;
+  }
+  function fieldText({ inp, fd }) {
+    return fd.type === "select" ? fd.options[Number(inp.value)] : inp.value.trim();
+  }
+  // select 의 option 안 수식은 KaTeX 가 못 그리므로 $ 를 걷어 읽기 쉬운 글자로
+  function plainOptions(card) {
+    card.querySelectorAll("option").forEach((o) => {
+      o.textContent = o.textContent.replace(/\$/g, "").replace(/\\beta/g, "β").replace(/\\alpha/g, "α").replace(/\\,/g, " ");
+    });
+  }
+  // 바로 앞이 조작 단계이고 그 앞이 예측이면: 조작 전 내 예측 vs 실제
+  function predCompare() {
+    const prev = G.path[state.i - 1], predStep = G.path[state.i - 2];
+    if (!prev || prev.kind !== "explore" || !predStep || predStep.kind !== "predict") return "";
+    const pv = state.predictions[predStep.id];
+    if (pv === undefined) return "";
+    const pk = predStep.predict.kind;
+    const truth = pk === "sequence" ? predStep.predict.accept.values.join(" → ")
+      : pk === "count" ? `${predStep.predict.accept.value}개` : predStep.predict.correct || "";
+    const mine = Array.isArray(pv) ? pv.join(" → ") : typeof pv === "number" ? `${pv}개` : (typeof pv === "string" ? pv : "");
+    return truth && mine ? `<div class="compare"><div class="mine"><h4>조작 전 내 예측</h4>${md(mine)}</div><div class="model"><h4>실제</h4>${md(truth)}</div></div>` : "";
+  }
+  function checkStep(s, body, card) {
+    const inputs = makeFields(s, body);
+    plainOptions(body);
+    const msg = document.createElement("div"); msg.className = "msg";
+    const done = (revealed) => {
+      inputs.forEach(({ inp }) => { inp.disabled = true; });
+      bar.remove();
+      const d = document.createElement("div");
+      d.innerHTML = predCompare() + `<div class="hint">${revealed ? "정답을 보고 넘어가요.<br>" : ""}${md(s.model)}</div>`;
+      body.appendChild(d); tex(d);
+      const mine = inputs.map((it) => `${it.fd.label} ${fieldText(it)}`).join(", ");
+      body.appendChild(row(btn("다음", "primary", () => complete(s.history || `<b>${KIND_LABEL[s.kind]}</b> — ${mine}`))));
+    };
+    const bar = row(btn("확인", "primary", () => {
+      state.attempts++;
+      if (inputs.every(fieldOk)) { msg.className = "msg good"; msg.textContent = "맞아요!"; done(false); return; }
+      msg.className = "msg bad"; msg.textContent = "다시 생각해 보세요.";
+      attemptHints(s, card);
+      if (state.attempts === 2) bar.appendChild(btn("답 보기", "ghost", () => {
+        inputs.forEach((it) => { it.inp.value = it.fd.type === "select" ? String(it.fd.options.indexOf(it.accept)) : it.accept; });
+        msg.textContent = ""; done(true);
+      }));
+    }));
+    body.appendChild(bar); body.appendChild(msg);
+  }
+
   const RENDER = {
-    recall(s, body) { RENDER.ask(s, body); },
-    ask(s, body) {
+    recall(s, body, card) { s.input ? checkStep(s, body, card) : RENDER.ask(s, body); },
+    ask(s, body, card) {
+      if (s.input) return checkStep(s, body, card);
       if (s.reveal_text) {
         const more = btn("생각해 봤어요 → 확인", "primary", () => {
           more.remove();
@@ -499,9 +569,15 @@
         body.appendChild(msg);
       } else if (p.kind === "choice") {
         const opts = document.createElement("div"); opts.className = "opts";
-        p.options.forEach((o) => opts.appendChild(btn(o, "", () => {
+        p.options.forEach((o) => opts.appendChild(btn(o, "", function () {
           state.predictions[s.id] = o;
-          complete(`<b>예측</b> — ${o}`);
+          if (!s.explain) { complete(`<b>예측</b> — ${o}`); return; }
+          opts.querySelectorAll("button").forEach((b) => { b.disabled = true; });
+          this.classList.add("picked");
+          const d = document.createElement("div"); d.className = "hint";
+          d.innerHTML = (o === p.correct ? "맞아요! " : `실제로는 <b>${p.correct}</b>예요. `) + md(s.explain);
+          body.appendChild(d); tex(d);
+          body.appendChild(row(btn("다음", "primary", () => complete(`<b>예측</b> — ${o}`))));
         })));
         body.appendChild(opts);
       } else if (p.kind === "count") {
@@ -533,23 +609,15 @@
       $("boardTip").textContent = "슬라이더를 드래그하거나, 클릭한 뒤 ← → 키로 한 칸씩 움직일 수 있어요.";
     },
 
-    notice(s, body) {
+    notice(s, body, card) {
+      if (s.input) return checkStep(s, body, card);
       const ta = document.createElement("textarea"); ta.placeholder = "내가 본 것을 한 줄로…";
       body.appendChild(ta);
       body.appendChild(row(btn("내 생각 제출", "primary", function () {
         if (!ta.value.trim()) { ta.focus(); return; }
         state.notes[s.id] = ta.value.trim();
         this.disabled = true; ta.disabled = true;
-        const prev = G.path[state.i - 1], predStep = G.path[state.i - 2];
-        let extra = "";
-        if (predStep && state.predictions[predStep.id] !== undefined && predStep.kind === "predict") {
-          const pv = state.predictions[predStep.id];
-          const pk = predStep.predict.kind;
-          const truth = pk === "sequence" ? predStep.predict.accept.values.join(" → ")
-            : pk === "count" ? `${predStep.predict.accept.value}개` : predStep.predict.correct || "";
-          const mine = Array.isArray(pv) ? pv.join(" → ") : typeof pv === "number" ? `${pv}개` : (typeof pv === "string" ? pv : "");
-          if (truth && mine) extra = `<div class="compare"><div class="mine"><h4>조작 전 내 예측</h4>${mine}</div><div class="model"><h4>실제</h4>${truth}</div></div>`;
-        }
+        const extra = predCompare();
         const cmp = document.createElement("div");
         cmp.innerHTML = extra + `<div class="compare"><div class="mine"><h4>내가 쓴 것</h4>${md(ta.value.trim())}</div><div class="model"><h4>알아차릴 것</h4>${md(s.model)}</div></div>`;
         body.appendChild(cmp); tex(cmp);
@@ -558,19 +626,11 @@
     },
 
     compute(s, body, card) {
-      const wrap = document.createElement("div"); wrap.className = "fields";
-      const inputs = s.input.fields.map((fd) => {
-        const l = document.createElement("label"); l.innerHTML = md(fd.label);
-        const inp = document.createElement("input"); inp.type = "text"; inp.inputMode = "decimal";
-        l.appendChild(inp); wrap.appendChild(l); return { inp, fd, accept: verifiedRef(fd.accept) };
-      });
-      body.appendChild(wrap);
+      const inputs = makeFields(s, body);
       const msg = document.createElement("div"); msg.className = "msg";
       body.appendChild(row(btn("확인", "primary", () => {
         state.attempts++;
-        const ok = inputs.every(({ inp, fd, accept }) => fd.type === "expr"
-          ? sameExpr(inp.value, accept.replace(/\*\*/g, "^"), fd.var)
-          : Math.abs(parseNum(inp.value) - parseNum(accept)) < 1e-9);
+        const ok = inputs.every(fieldOk);
         if (ok) {
           const vals = inputs.map(({ inp }) => inp.value.trim()).join(", ");
           const label = s.input.fields.map((fd) => fd.label).join(", ");
